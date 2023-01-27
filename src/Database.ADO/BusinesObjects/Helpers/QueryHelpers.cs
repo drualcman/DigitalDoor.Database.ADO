@@ -23,40 +23,30 @@ internal class QueryHelpers
     #region security     
     public void CheckQuery(string sql)
     {
-        if(sql.ToUpper().IndexOf("UPDATE ") < 0)
+        ChecInjection(sql);
+        if(!sql.ToUpper().StartsWith("UPDATE "))
         {
-            if(sql.ToUpper().IndexOf("INSERT ") < 0)
+            if(!sql.ToUpper().StartsWith("INSERT "))
             {
-                if(sql.ToUpper().IndexOf("DELETE ") < 0)
+                if(!sql.ToUpper().StartsWith("DELETE "))
                 {
-                    if(sql.ToUpper().IndexOf("EXEC ") < 0)
+                    if(!sql.ToUpper().StartsWith("EXEC "))
                     {
-                        if(sql.ToUpper().IndexOf("DROP ") < 0)
+                        if(!sql.ToUpper().StartsWith("DROP "))
                         {
-                            if(sql.ToUpper().IndexOf("ALTER ") < 0)
+                            if(!sql.ToUpper().StartsWith("ALTER "))
                             {
-                                if(sql.ToUpper().IndexOf("CREATE ") < 0)
+                                if(!sql.ToUpper().StartsWith("CREATE "))
                                 {
-                                    string err = "La cadena debe ser: " + "\r\n" +
-                                        "UPDATE < tabla > SET < campo=valor >" + "\r\n" +
-                                        "INSERT INTO < tabla > VALUES < campo=valor >" + "\r\n" +
-                                        "DELETE < tabla > WHERE < condicion >" + "\r\n" +
-                                        "EXEC  < Storage Proccess > < Varaibles >" + "\r\n" +
-                                        "CREATE TABLE" + "\r\n" +
-                                        "DROP TABLE/PROCEDURE/FUNCTION < tabla >" + "\r\n" +
-                                        "ALTER TABLE < tabla > < definicion >" + "\r\n" +
-                                        "SQL: " + sql;
-                                    Log.end(null, err);
-
-                                    throw new ArgumentException(err);
+                                    if(!sql.ToUpper().StartsWith("SELECT "))
+                                        ThrowException(sql, "Check your query");
                                 }
                             }
                         }
                     }
                 }
             }
-        } 
-        ChecInjection(sql);
+        }
     }
 
     private void ChecInjection(string query)
@@ -67,32 +57,28 @@ internal class QueryHelpers
             if(query.IndexOf("--") > -1)
             {
                 Log.end(null, "Comments not allowed");
-
-                throw new ArgumentException("Comments not allowed. SQL: " + query);
+                ThrowException("Comments not allowed. SQL: " + query);
             }
             else if(query.ToUpper().IndexOf("DROP TABLE ") > -1)
             {
                 Log.end(null, "Must be SELECT fields FROM table, not DROP or other commands...");
-
-                throw new ArgumentException("Must be SELECT fields FROM table, not DROP or other commands... SQL: " + query);
+                ThrowException("Must be SELECT fields FROM table, not DROP or other commands... SQL: " + query);
             }
             else if(query.ToUpper().IndexOf("DROP PROCEDURE ") > -1)
             {
                 Log.end(null, "Must be SELECT fields FROM table, not DROP or other commands...");
-
-                throw new ArgumentException("Must be SELECT fields FROM table, not DROP or other commands... SQL: " + query);
+                ThrowException("Must be SELECT fields FROM table, not DROP or other commands... SQL: " + query);
             }
             else if(query.ToUpper().IndexOf("DROP FUNCTION ") > -1)
             {
                 Log.end(null, "LMust be SELECT fields FROM table, not DROP or other commands...");
-
-                throw new ArgumentException("Must be SELECT fields FROM table, not DROP or other commands... SQL: " + query);
+                ThrowException("Must be SELECT fields FROM table, not DROP or other commands... SQL: " + query);
             }
         }
         else
         {
             Log.end(null, "SQL control unsuccessful.");
-            throw new ArgumentException("Query must be SELECT fields FROM table / EXEC Storage Process and variables. SQL: " + query);
+            ThrowException("Query must be SELECT fields FROM table / EXEC Storage Process and variables. SQL: " + query);
         }
     }
 
@@ -127,6 +113,22 @@ internal class QueryHelpers
         }
         else resultado = true;
         return resultado;
+    }
+
+    private void ThrowException(string sql, string aditionalMessage = "")
+    {
+        string err = $"{aditionalMessage}\r\nQuery must be: \r\n" +
+                                        "UPDATE < table > SET < column=valuer >" + "\r\n" +
+                                        "INSERT INTO < table > VALUES < column=value >" + "\r\n" +
+                                        "DELETE < table > WHERE < condicion >" + "\r\n" +
+                                        "EXEC  < Storage Proccess > < variables >" + "\r\n" +
+                                        "CREATE TABLE" + "\r\n" +
+                                        "DROP TABLE/PROCEDURE/FUNCTION < table >" + "\r\n" +
+                                        "ALTER TABLE < table > < definicion >" + "\r\n" +
+                                        "SQL: " + sql;
+        Log.end(null, err);
+
+        throw new ArgumentException(err);
     }
     #endregion
 }
