@@ -1,0 +1,27 @@
+﻿global using System;
+global using System.Collections.Generic;
+global using System.Linq;
+global using System.Text;
+global using System.Threading.Tasks;
+global using Database.ADO.Entities.ValueObjects;
+global using System.Data.Common;
+global using System.Reflection;
+global using System.Collections.ObjectModel;
+global using System.Data;
+global using System.Data.SqlClient;
+global using Database.ADO.Entities;
+global using System.Text.RegularExpressions;
+global using System.Collections;
+global using Database.ADO.Entities.Interfaces;
+global using Database.ADO.Entities.Attributes;
+global using Database.ADO.BusinesObjects.Helpers;
+global using System.Text.Json;
+global using Database.ADO.BusinesObjects;
+global using Database.ADO.BusinesObjects.Extensions;
+global using System.Xml;
+global using Database.ADO.BusinesObjects.Logs;
+global using Database.ADO.BusinesObjects.SqlCommands;
+global using Database.ADO.BusinesObjects.Entities.Models;
+global using Database.ADO.BusinesObjects.Converters;
+global using Database.ADO.Entities.Helpers;
+
