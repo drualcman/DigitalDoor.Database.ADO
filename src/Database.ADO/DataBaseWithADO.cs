@@ -225,10 +225,14 @@ public class DataBaseWithADO
 
     #region wrapper QueryListWithModel                                  
     private QueryListWithModel CreatQueryListWithModel() => new(WhereRequired, LogService, Options.LogOptions.LogResults, Options.EnableDatabaseControl, Options.ChrControl, ConnectionStringBK);
-    public List<TModel> List<TModel>(string sql = "", int timeout = 30) where TModel : new() => CreatQueryListWithModel().ModelList<TModel>(sql, timeout);
-    public List<TModel> List<TModel>(SqlCommand cmd, int timeout = 30) where TModel : new() => CreatQueryListWithModel().ModelList<TModel>(cmd, timeout);
-    public Task<List<TModel>> ListAsync<TModel>(string sql = "", int timeout = 30) where TModel : new() => CreatQueryListWithModel().ModelListAsync<TModel>(sql, timeout);
-    public Task<List<TModel>> ListAsync<TModel>(SqlCommand cmd, int timeout = 30) where TModel : new() => CreatQueryListWithModel().ModelListAsync<TModel>(cmd, timeout);
+    public List<TModel> ModelList<TModel>(string sql = "", int timeout = 30) where TModel : new() => CreatQueryListWithModel().ModelList<TModel>(sql, timeout);
+    public List<TModel> ModelList<TModel>(SqlCommand cmd, int timeout = 30) where TModel : new() => CreatQueryListWithModel().ModelList<TModel>(cmd, timeout);
+    public Task<List<TModel>> ModelListAsync<TModel>(string sql = "", int timeout = 30) where TModel : new() => CreatQueryListWithModel().ModelListAsync<TModel>(sql, timeout);
+    public Task<List<TModel>> ModelListAsync<TModel>(SqlCommand cmd, int timeout = 30) where TModel : new() => CreatQueryListWithModel().ModelListAsync<TModel>(cmd, timeout);
+    public List<TModel> List<TModel>(string sql = "", int timeout = 30) where TModel : new() => ModelList<TModel>(sql, timeout);
+    public List<TModel> List<TModel>(SqlCommand cmd, int timeout = 30) where TModel : new() => ModelList<TModel>(cmd, timeout);
+    public Task<List<TModel>> ListAsync<TModel>(string sql = "", int timeout = 30) where TModel : new() => ModelListAsync<TModel>(sql, timeout);
+    public Task<List<TModel>> ListAsync<TModel>(SqlCommand cmd, int timeout = 30) where TModel : new() => ModelListAsync<TModel>(cmd, timeout);
     #endregion   
 
     #region wrapper QueryWithModel                                  
