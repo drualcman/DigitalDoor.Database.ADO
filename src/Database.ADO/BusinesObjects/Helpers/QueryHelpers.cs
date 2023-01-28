@@ -56,29 +56,24 @@ internal class QueryHelpers
             // no permitir comentarios ni algunas instrucciones maliciosas
             if(query.IndexOf("--") > -1)
             {
-                Log.end(null, "Comments not allowed");
-                ThrowException("Comments not allowed. SQL: " + query);
+                ThrowException(query, "Comments not allowed. SQL: ");
             }
             else if(query.ToUpper().IndexOf("DROP TABLE ") > -1)
             {
-                Log.end(null, "Must be SELECT fields FROM table, not DROP or other commands...");
-                ThrowException("Must be SELECT fields FROM table, not DROP or other commands... SQL: " + query);
+                ThrowException(query, "Must be SELECT fields FROM table, not DROP or other commands... SQL: ");
             }
             else if(query.ToUpper().IndexOf("DROP PROCEDURE ") > -1)
             {
-                Log.end(null, "Must be SELECT fields FROM table, not DROP or other commands...");
-                ThrowException("Must be SELECT fields FROM table, not DROP or other commands... SQL: " + query);
+                ThrowException(query, "Must be SELECT fields FROM table, not DROP or other commands... SQL: ");
             }
             else if(query.ToUpper().IndexOf("DROP FUNCTION ") > -1)
             {
-                Log.end(null, "LMust be SELECT fields FROM table, not DROP or other commands...");
-                ThrowException("Must be SELECT fields FROM table, not DROP or other commands... SQL: " + query);
+                ThrowException(query, "Must be SELECT fields FROM table, not DROP or other commands...");
             }
         }
         else
         {
-            Log.end(null, "SQL control unsuccessful.");
-            ThrowException("Query must be SELECT fields FROM table / EXEC Storage Process and variables. SQL: " + query);
+            ThrowException(query, "Query must be SELECT fields FROM table / EXEC Storage Process and variables ");
         }
     }
 
@@ -127,7 +122,6 @@ internal class QueryHelpers
                                         "ALTER TABLE < table > < definicion >" + "\r\n" +
                                         "SQL: " + sql;
         Log.end(null, err);
-
         throw new ArgumentException(err);
     }
     #endregion
