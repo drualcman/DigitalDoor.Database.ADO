@@ -15,10 +15,9 @@ internal class ColumnToObject
 
     public ColumnToObjectResponse SetColumnToObject<TModel>(ColumnValue value, DataRow reader, TModel item, string actualTable)
     {
-        ColumnToObjectResponse response = new ColumnToObjectResponse
+        ColumnToObjectResponse response = new ColumnToObjectResponse(item)
         {
-            ActualTable = actualTable,
-            InUse = item
+            ActualTable = actualTable
         };
 
         TableName father = Tables.Where(t => t.ShortName == response.ActualTable).FirstOrDefault();

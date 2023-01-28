@@ -2,6 +2,12 @@
 
 internal class ColumnToObjectResponse
 {
+    public ColumnToObjectResponse(object inUse)
+    {
+        InUse=inUse;
+
+    }
+
     public object InUse { get; set; }
     public string ActualTable { get; set; }
     public bool IsList { get; set; }

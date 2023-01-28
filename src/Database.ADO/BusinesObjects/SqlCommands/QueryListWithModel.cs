@@ -89,20 +89,14 @@ internal class QueryListWithModel : SqlQueryBase
                         TModel dat = new();
                         instanceModel.InstanceProperties(dat);
                         ColumnValue columnValue = new ColumnValue(tableNamesBK, dat);
-                        ColumnToObjectResponse response = new ColumnToObjectResponse
-                        {
-                            InUse = dat
-                        };
-                        ////first iteration
-                        //response = columnToObject
-                        //    .SetColumnToObject(new ColumnValue(TableNames, dat), dr, dat, "t0");
+                        ColumnToObjectResponse response = new ColumnToObjectResponse(dat);
+
                         currentRow = dr[0];//know what is the first column asume it's the key column and no repeated
                         int i = 0;
                         do
                         {
                             response = columnToObject.SetColumnToObject(new ColumnValue(tableNamesBK, response.InUse),
-                                                dr, response.InUse, tableNamesBK[i].ShortName);
-
+                                                dr, response.InUse, tableNamesBK[i].ShortName);                    
                             if (response.IsList)
                             {
                                 hasList = true;
@@ -121,7 +115,7 @@ internal class QueryListWithModel : SqlQueryBase
                                                                         new[] { response.InUse });
                                 response.InUse = listInstance;
                             }
-
+                            dat = (TModel)response.InUse;
                             i++;
                             if (i >= t)
                             {
