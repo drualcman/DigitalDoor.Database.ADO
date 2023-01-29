@@ -10,15 +10,15 @@ internal static class ObjectExtension
         string data;
         try
         {
-            if(o != null)
+            if (o != null)
             {
-                if(o.GetType() == typeof(DataSet))
+                if (o.GetType() == typeof(DataSet))
                     data = DataSetConverter.ToJson((DataSet)o);
-                else if(o.GetType() == typeof(DataTable))
+                else if (o.GetType() == typeof(DataTable))
                 {
                     data = DataTableConverter.ToJson((DataTable)o);
                 }
-                else if(o.GetType() == typeof(DataView))
+                else if (o.GetType() == typeof(DataView))
                 {
                     DataView dv = (DataView)o;
                     DataTable dt = dv.ToTable();
@@ -28,7 +28,7 @@ internal static class ObjectExtension
             }
             else data = "{\"Object\":\"NULL\"}";
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             data = $"{{\"Exception\":\"{ex.Message}\"}}";
         }
@@ -51,19 +51,19 @@ internal static class ObjectExtension
     /// <param name="obj"></param>
     /// <param name="name"></param>
     /// <returns></returns>
-    public static Object GetPropValue(this Object obj, String name)
+    internal static object GetPropValue(this object obj, string name)
     {
-        if(obj == null) return null;
+        if (obj == null) return null;
         else
         {
             // Split property name to parts (propertyName could be hierarchical, like obj.subobj.subobj.property
             string[] propertyNameParts = name.Split('.');
 
-            foreach(String part in propertyNameParts)
+            foreach (string part in propertyNameParts)
             {
                 Type type = obj.GetType();
                 PropertyInfo info = type.GetProperty(part);
-                if(info == null) return null;
+                if (info == null) return null;
                 else obj = info.GetValue(obj, null);
             }
             return obj;
@@ -77,11 +77,11 @@ internal static class ObjectExtension
     /// <param name="obj"></param>
     /// <param name="name"></param>
     /// <returns></returns>
-    public static T GetPropValue<T>(this Object obj, String name)
+    internal static T GetPropValue<T>(this object obj, string name)
     {
         // throws InvalidCastException if types are incompatible
-        Object retval = GetPropValue(obj, name);
-        if(retval == null) return default(T);
+        object retval = obj.GetPropValue(name);
+        if (retval == null) return default;
         else return (T)retval;
     }
 }

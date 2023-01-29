@@ -3,14 +3,14 @@
 /// <summary>
 /// Manejo de datos
 /// </summary>
-internal class DataManagement
+public class DataManagement
 {
     /// <summary>
     /// Convertir un objeto a data table
     /// </summary>
     /// <param name="o"></param>
     /// <returns></returns>
-    internal static DataTable ObjectToData(object o)
+    public static DataTable ObjectToData(object o)
     {
         //https://stackoverflow.com/questions/18746064/using-reflection-to-create-a-datatable-from-a-class
         DataTable dt = new DataTable("OutputData");
@@ -37,7 +37,7 @@ internal class DataManagement
     /// <param name="filas">Datos que va a contener la lista.</param>
     /// <param name="columnas">Nombres de las columnas para la tabla</param>
     /// <returns></returns>
-    internal static DataTable ConvertListToDataTable(List<object> filas, string[] columnas)
+    public static DataTable ConvertListToDataTable(List<object> filas, string[] columnas)
     {
         //original http://stackoverflow.com/questions/18100783/how-to-convert-a-list-into-data-table
 
@@ -64,7 +64,7 @@ internal class DataManagement
     /// </summary>
     /// <param name="o"></param>
     /// <returns></returns>
-    internal static string GetPropiedades(object o)
+    public static string GetPropiedades(object o)
     {
         Type t = o.GetType();
         PropertyInfo[] pis = t.GetProperties();
@@ -78,7 +78,7 @@ internal class DataManagement
     /// </summary>
     /// <param name="data">Datos que va a contener la lista.</param>
     /// <returns></returns>
-    internal static DataTable ConvertListToDataTable<T>(List<T> data)
+    public static DataTable ConvertListToDataTable<T>(List<T> data)
     {
         // http://stackoverflow.com/questions/19076034/how-to-fill-a-datatable-with-listt
         System.ComponentModel.PropertyDescriptorCollection props =
@@ -121,7 +121,7 @@ internal class DataManagement
     /// <typeparam name="T">Nombre de la clase a recibir los datos</typeparam>
     /// <param name="tbl">Tabla contenedora de los datos</param>
     /// <returns></returns>
-    internal static List<T> ConvertDataTableToList<T>(DataTable tbl) where T : new()
+    public static List<T> ConvertDataTableToList<T>(DataTable tbl) where T : new()
     {
         //https://stackoverflow.com/questions/8008389/how-to-convert-datatable-to-class-object
         // define return list
@@ -143,7 +143,7 @@ internal class DataManagement
     /// </summary>
     /// <param name="ds"></param>
     /// <returns></returns>
-    internal static string ConvertDataSetToJSON(DataSet ds)
+    public static string ConvertDataSetToJSON(DataSet ds)
     {
         //https://stackoverflow.com/questions/17398019/convert-datatable-to-json-in-c-sharp                
         StringBuilder jsonString = new StringBuilder();
@@ -166,7 +166,7 @@ internal class DataManagement
         return null;
     }
 
-    internal static string ConvertDatatableToJSON(DataSet ds)
+    public static string ConvertDatatableToJSON(DataSet ds)
     {
         return ConvertDataSetToJSON(ds);
     }
@@ -213,7 +213,7 @@ internal class DataManagement
         return retorno;
     }
 
-    internal static DataTable JsonStringToDataTable(string jsonString)
+    public static DataTable JsonStringToDataTable(string jsonString)
     {
         //http://www.c-sharpcorner.com/blogs/convert-json-string-to-datatable-in-asp-net1
         DataTable dt = new DataTable();
@@ -276,7 +276,7 @@ internal class DataManagement
         return dt;
     }
 
-    internal static List<Dictionary<string, string>> JsonStringToListDictionary(string jsonString)
+    public static List<Dictionary<string, string>> JsonStringToListDictionary(string jsonString)
     {
         List<Dictionary<string, string>> dt = new List<Dictionary<string, string>>();
         if (!string.IsNullOrEmpty(jsonString) && jsonString.ToLower() != "undefined")

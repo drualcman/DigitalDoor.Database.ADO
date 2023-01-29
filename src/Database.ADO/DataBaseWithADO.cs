@@ -117,6 +117,12 @@ public class DataBaseWithADO
     {
         return WhereRequired.Where(k => k.Key == key).FirstOrDefault().Value;
     }
+
+    public  string SetQuery<TModel>()
+    {
+        SqlQueryTranslator queryTranslator = new SqlQueryTranslator(WhereRequired);
+        return queryTranslator.SetQuery<TModel>();
+    }
     #endregion
 
     #region wrapper commands
@@ -194,6 +200,8 @@ public class DataBaseWithADO
     public Task<bool> HasRowsAsync(string sql, int timeout = 30) => CreateManagement().HasRowsAsync(sql, timeout);
     public int GetNewId(string Tabla) => CreateManagement().GetNewId(Tabla);
     public int GetNewId(string Tabla, string col) => CreateManagement().GetNewId(Tabla, col);
+    public string GetCol(string sql, string colSQL, int timeOut = 30) => GetColAync(sql, colSQL, timeOut).Result;
+    public string GetCol(string sql, int colSQL, int timeOut = 30) => GetColAync(sql, colSQL, timeOut).Result;  
     public Task<string> GetColAync(string sql, string colSQL, int timeOut = 30) => CreateManagement().GetColAync(sql, colSQL, timeOut);
     public Task<string> GetColAync(string sql, int colSQL, int timeOut = 30) => CreateManagement().GetColAync(sql, colSQL, timeOut);
 

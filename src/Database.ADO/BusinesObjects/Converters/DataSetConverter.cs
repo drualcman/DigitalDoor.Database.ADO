@@ -1,7 +1,7 @@
 ﻿namespace Database.ADO.BusinesObjects.Converters;
 
-internal class DataSetConverter
+public class DataSetConverter
 {
-    internal static string ToJson(DataSet ds)
+    public static string ToJson(DataSet ds)
         => ds.ToJson();
 }

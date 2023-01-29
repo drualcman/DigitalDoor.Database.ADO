@@ -1,13 +1,13 @@
 ﻿namespace Database.ADO.BusinesObjects.Converters;
 
-internal class JsonConverter
+public class JsonConverter
 {
     /// <summary>
     /// Convertir un objeto a data table
     /// </summary>
     /// <param name="o"></param>
     /// <returns></returns>
-    internal static DataTable ObjectToData(object o)
+    public static DataTable ObjectToData(object o)
     {
         //https://stackoverflow.com/questions/18746064/using-reflection-to-create-a-datatable-from-a-class
         DataTable dt = new DataTable("OutputData");
@@ -33,7 +33,7 @@ internal class JsonConverter
     /// </summary>
     /// <param name="o"></param>
     /// <returns></returns>
-    internal static string ObjectToJSON(object o)
+    public static string ObjectToJSON(object o)
     {
         try
         {
@@ -69,7 +69,7 @@ internal class JsonConverter
     /// </summary>
     /// <param name="xml">Datos en formato XML</param>
     /// <returns></returns>
-    internal static DataSet xml2dataset(string xmlData)
+    public static DataSet xml2dataset(string xmlData)
     {
         DataSet ds = new DataSet();
         ds.DataSetName = "DataSet";
@@ -185,7 +185,7 @@ internal class JsonConverter
     /// <param name="filas">Datos que va a contener la lista.</param>
     /// <param name="columnas">Nombres de las columnas para la tabla</param>
     /// <returns></returns>
-    internal static DataTable ConvertListToDataTable(List<object> filas, string[] columnas)
+    public static DataTable ConvertListToDataTable(List<object> filas, string[] columnas)
     {
         //original http://stackoverflow.com/questions/18100783/how-to-convert-a-list-into-data-table
 
@@ -212,7 +212,7 @@ internal class JsonConverter
     /// </summary>
     /// <param name="data">Datos que va a contener la lista.</param>
     /// <returns></returns>
-    internal static DataTable ConvertListToDataTable<T>(List<T> data)
+    public static DataTable ConvertListToDataTable<T>(List<T> data)
     {
         // http://stackoverflow.com/questions/19076034/how-to-fill-a-datatable-with-listt
         System.ComponentModel.PropertyDescriptorCollection props =
@@ -255,7 +255,7 @@ internal class JsonConverter
     /// <typeparam name="T">Nombre de la clase a recibir los datos</typeparam>
     /// <param name="tbl">Tabla contenedora de los datos</param>
     /// <returns></returns>
-    internal static List<T> ConvertDataTableToList<T>(DataTable tbl) where T : new()
+    public static List<T> ConvertDataTableToList<T>(DataTable tbl) where T : new()
     {
         //https://stackoverflow.com/questions/8008389/how-to-convert-datatable-to-class-object
         // define return list
@@ -277,7 +277,7 @@ internal class JsonConverter
     /// </summary>
     /// <param name="ds"></param>
     /// <returns></returns>
-    internal static string ConvertDataSetToJSON(DataSet ds)
+    public static string ConvertDataSetToJSON(DataSet ds)
     {
         //https://stackoverflow.com/questions/17398019/convert-datatable-to-json-in-c-sharp                
         StringBuilder jsonString = new StringBuilder();
@@ -321,7 +321,7 @@ internal class JsonConverter
         return null;
     }
 
-    internal static string ConvertDatatableToJSON(DataSet ds)
+    public static string ConvertDatatableToJSON(DataSet ds)
     {
         return ConvertDataSetToJSON(ds);
     }
@@ -330,7 +330,7 @@ internal class JsonConverter
     /// </summary>
     /// <param name="dt"></param>
     /// <returns></returns>
-    internal static string ConvertDataTableToJSON(DataTable dt)
+    public static string ConvertDataTableToJSON(DataTable dt)
     {
         //https://stackoverflow.com/questions/17398019/convert-datatable-to-json-in-c-sharp                
         StringBuilder jsonString = new StringBuilder();
@@ -380,7 +380,7 @@ internal class JsonConverter
     /// <param name="jsonString"></param>
     /// <returns></returns>
     /// <exception cref="Exception"></exception>
-    internal static DataTable JsonStringToDataTable(string jsonString)
+    public static DataTable JsonStringToDataTable(string jsonString)
     {
         //http://www.c-sharpcorner.com/blogs/convert-json-string-to-datatable-in-asp-net1
         DataTable dt = new DataTable();

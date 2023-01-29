@@ -1,6 +1,6 @@
 ﻿namespace Database.ADO.BusinesObjects.Extensions;
 
-internal static  class DataRowExtension
+internal static class DataRowExtension
 {
     #region methods
     /// <summary>
@@ -8,11 +8,11 @@ internal static  class DataRowExtension
     /// </summary>
     /// <param name="dr"></param>
     /// <returns></returns>
-    internal static  string[] ColumnNamesToArray(this DataRow dr)
+    internal static string[] ColumnNamesToArray(this DataRow dr)
     {
         List<string> names = new List<string>();
 
-        foreach(DataColumn item in dr.Table.Columns)
+        foreach (DataColumn item in dr.Table.Columns)
         {
             names.Add(item.ColumnName);
         }
@@ -25,11 +25,11 @@ internal static  class DataRowExtension
     /// </summary>
     /// <param name="dt"></param>
     /// <returns></returns>
-    internal static  List<string> ColumnNamesToList(this DataRow dr)
+    internal static List<string> ColumnNamesToList(this DataRow dr)
     {
         List<string> names = new List<string>();
 
-        foreach(DataColumn item in dr.ItemArray)
+        foreach (DataColumn item in dr.ItemArray)
         {
             names.Add(item.ColumnName);
         }
@@ -44,10 +44,11 @@ internal static  class DataRowExtension
     /// </summary>
     /// <param name="dr"></param>
     /// <returns></returns>
-    internal static  Task<string[]> ColumnNamesToArrayAsync(this DataRow dr) => Task.FromResult(dr.ColumnNamesToArray());
+    internal static Task<string[]> ColumnNamesToArrayAsync(this DataRow dr) => Task.FromResult(dr.ColumnNamesToArray());
 
-    internal static  Task<List<string>> ColumnNamesToListAsync(this DataRow dr) => Task.FromResult(dr.ColumnNamesToList());
+    internal static Task<List<string>> ColumnNamesToListAsync(this DataRow dr) => Task.FromResult(dr.ColumnNamesToList());
     #endregion
 
 
 }
+
