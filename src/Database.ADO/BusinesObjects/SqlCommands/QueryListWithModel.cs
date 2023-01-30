@@ -7,7 +7,6 @@ internal class QueryListWithModel : SqlQueryBase
     {
     }
 
-
     #region direct queries
     public List<TModel> ModelList<TModel>(string sql = "", int timeout = 30) where TModel : new() =>
         ModelListAsync<TModel>(sql, timeout).Result;

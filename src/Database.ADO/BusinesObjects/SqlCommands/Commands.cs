@@ -32,7 +32,7 @@ internal class Commands : SqlBaseCommands
     public SqlDataReader Reader(string query, int timeout = 30)
     {
         QHelpers.CheckQuery(query);
-        using SqlCommand cmd = new SqlCommand();
+        SqlCommand cmd = new SqlCommand();
         cmd.CommandText = query;
         return  Reader(cmd, timeout);
     }
