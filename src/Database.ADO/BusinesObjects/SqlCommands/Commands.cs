@@ -14,19 +14,29 @@ internal class Commands : SqlBaseCommands
         QHelpers.CheckQuery(query);
         using SqlCommand cmd = new SqlCommand();
         cmd.CommandText = query;
-        object result = Execute(cmd, timeout);
-        if(LogResults) log.end(result);
+        object result;
+        try
+        {
+            result = Execute(cmd, timeout);
+            if(LogResults) log.end(result);
+        }
+        catch(Exception ex)
+        {
+            result = null;
+            log.end(result, ex);
+            throw;
+        }
+        finally
+        {
+            cmd.Dispose();
+        }
         return result;
     }
 
     public bool ExecuteCommand(string query, int timeout = 30)
     {
-        QHelpers.CheckQuery(query);
-        using SqlCommand cmd = new SqlCommand();
-        cmd.CommandText = query;
-        object response = Execute(query, timeout);
-        bool result = response != null;
-        return result;
+        Execute(query, timeout);
+        return true;
     }
 
     #region task
@@ -55,9 +65,8 @@ internal class Commands : SqlBaseCommands
     #region methods    
     public bool ExecuteCommand(SqlCommand cmd, int timeout = 30)
     {
-        object response = Execute(cmd, timeout);
-        bool result = response != null;
-        return result;
+        Execute(cmd, timeout);
+        return true;
     }
     public object Execute(SqlCommand cmd, int timeout = 30)
     {
@@ -85,74 +94,13 @@ internal class Commands : SqlBaseCommands
         }
         return result;
     }
-
-    public SqlDataReader Reader(SqlCommand cmd, int timeout = 30)
-    {
-        SqlDataReader result = default;
-        if(cmd != null)
-        {
-            log.start("Reader(cmd)", cmd.CommandText, ConnectionString);
-            try
-            {
-                SqlConnection cn = new SqlConnection(ConnectionString);
-                cmd.Connection = cn;
-                cmd.CommandTimeout = timeout;
-                cmd.Connection.Open();
-                result = cmd.ExecuteReader();                
-                if(LogResults) log.end(result);
-            }
-            catch(Exception ex)
-            {
-                result = null;
-                log.end(result, ex);
-            }
-        }
-        else
-        {
-            log.start("ExecuteCommand(cmd)", "", ConnectionString);
-            log.end(result.ToString(), "CMD is null");
-        }
-        return result;
-    }
     #endregion
 
     #region task
     public async Task<bool> ExecuteCommandAsync(SqlCommand cmd, int timeout = 30)
     {
-        bool result;
-        if(cmd != null)
-        {
-            log.start("ExecuteCommand(cmd)", cmd.CommandText, ConnectionString);
-            try
-            {
-                using SqlConnection cn = new SqlConnection(ConnectionString);
-                cmd.Connection = cn;
-                cmd.CommandTimeout = timeout;
-                await cmd.Connection.OpenAsync();
-                cmd.CommandTimeout = timeout;
-                await cmd.ExecuteNonQueryAsync();
-                result = true;
-                await cmd.Connection.CloseAsync();
-                if(LogResults) log.end(result.ToString());
-            }
-            catch(Exception ex)
-            {
-                result = false;
-                log.end(result, ex);
-            }
-            finally
-            {
-                await cmd.DisposeAsync();
-            }
-        }
-        else
-        {
-            result = false;
-            log.start("ExecuteCommand(cmd)", "", ConnectionString);
-            log.end(result.ToString(), "CMD is null");
-        }
-
-        return result;
+        await ExecuteAsync(cmd, timeout);
+        return true;
     }
 
     public async Task<object> ExecuteAsync(SqlCommand cmd, int timeout = 30)
@@ -176,6 +124,7 @@ internal class Commands : SqlBaseCommands
             {
                 result = null;
                 log.end(result, ex);
+                throw;
             }
             finally
             {
@@ -189,8 +138,5 @@ internal class Commands : SqlBaseCommands
         }
         return result;
     }
-
-    public Task<SqlDataReader> ReaderAsync(SqlCommand cmd, int timeout = 30) =>
-        Task.FromResult(Reader(cmd, timeout));
     #endregion
 }
