@@ -29,14 +29,6 @@ internal class Commands : SqlBaseCommands
         return result;
     }
 
-    public SqlDataReader Reader(string query, int timeout = 30)
-    {
-        QHelpers.CheckQuery(query);
-        SqlCommand cmd = new SqlCommand();
-        cmd.CommandText = query;
-        return  Reader(cmd, timeout);
-    }
-
     #region task
     public async Task<object> ExecuteAsync(string query, int timeout = 30)
     {
@@ -57,13 +49,10 @@ internal class Commands : SqlBaseCommands
         result = await ExecuteCommandAsync(cmd, timeout);
         return result;
     }
-
-    public Task<SqlDataReader> ReaderAsync(string query, int timeout = 30) =>
-        Task.FromResult(Reader(query, timeout));
     #endregion
     #endregion
 
-    #region methods         
+    #region methods    
     public bool ExecuteCommand(SqlCommand cmd, int timeout = 30)
     {
         object response = Execute(cmd, timeout);

@@ -129,16 +129,12 @@ public class DataBaseWithADO
     private Commands CreateCommands() => new(LogService, Options.LogOptions.LogResults, Options.EnableDatabaseControl, Options.ChrControl, ConnectionStringBK);
     public object Execute(string query, int timeout = 30) => CreateCommands().Execute(query, timeout);
     public bool ExecuteCommand(string query, int timeout = 30) => CreateCommands().ExecuteCommand(query, timeout);
-    public SqlDataReader Reader(string query, int timeout = 30) => CreateCommands().Reader(query, timeout);
     public Task<object> ExecuteAsync(string query, int timeout = 30) => CreateCommands().ExecuteAsync(query, timeout);
     public Task<bool> ExecuteCommandAsync(string query, int timeout = 30) => CreateCommands().ExecuteCommandAsync(query, timeout);
-    public Task<SqlDataReader> ReaderAsync(string query, int timeout = 30) => CreateCommands().ReaderAsync(query, timeout);
     public bool ExecuteCommand(SqlCommand cmd, int timeout = 30) => CreateCommands().ExecuteCommand(cmd, timeout);
     public object Execute(SqlCommand cmd, int timeout = 30) => CreateCommands().Execute(cmd, timeout);
-    public SqlDataReader Reader(SqlCommand cmd, int timeout = 30) => CreateCommands().Reader(cmd, timeout);
     public Task<bool> ExecuteCommandAsync(SqlCommand cmd, int timeout = 30) => CreateCommands().ExecuteCommandAsync(cmd, timeout);
     public Task<object> ExecuteAsync(SqlCommand cmd, int timeout = 30) => CreateCommands().ExecuteAsync(cmd, timeout);
-    public Task<SqlDataReader> ReaderAsync(SqlCommand cmd, int timeout = 30) => CreateCommands().ReaderAsync(cmd, timeout);
     #endregion
 
     #region wrapper delete                                  

@@ -5,11 +5,10 @@
 /// </summary>
 internal class Management : SqlBaseCommands
 {
-    readonly Commands Commands;
+    readonly QueryDataTable Commands;
     public Management(IDbLog dbLog, bool logResults, bool databaseControl, bool charControl, string connectionString)
         : base(dbLog, logResults, databaseControl, charControl, connectionString)
-        => Commands = new(dbLog, logResults, databaseControl, charControl, connectionString);
-
+        => Commands = new(new Dictionary<string, object>(), dbLog, logResults, databaseControl, charControl, connectionString);
 
     public async Task<string> GetColAync(string sql, string colSQL, int timeOut = 30)
     {
@@ -17,21 +16,13 @@ internal class Management : SqlBaseCommands
         string datoRetorno = string.Empty;
         try
         {
-            QHelpers.CheckQuery(sql);
-            using SqlCommand cmd = new SqlCommand();
-            cmd.CommandText = sql;
-            cmd.CommandTimeout = timeOut;
-            using SqlDataReader dr = await Commands.ReaderAsync(cmd, timeOut);
-            if (dr.HasRows)
+            using DataTable dt = await Commands.GetDataTableAsync(sql, timeOut);
+            if (dt.Rows.Count > 0)
             {
-                if (dr.Read())
-                    datoRetorno = dr[colSQL].ToString();
-                else
-                    datoRetorno = string.Empty;
+                datoRetorno = dt.Rows[0][colSQL].ToString();
             }
             else
                 datoRetorno = string.Empty;
-            dr.Close();
         }
         catch (Exception exConexion)
         {
@@ -48,23 +39,14 @@ internal class Management : SqlBaseCommands
         log.start("GetColAync(sql, colSQL, timeOut)", sql, colSQL.ToString() + ", " + timeOut.ToString());
         string datoRetorno = string.Empty;
         try
-        {
-            QHelpers.CheckQuery(sql);
-            using SqlCommand cmd = new SqlCommand();
-            cmd.CommandText = sql;
-            cmd.CommandTimeout = timeOut;
-            using SqlDataReader dr = await Commands.ReaderAsync(cmd);         // ejecutar el comando SQL
-            if (dr.HasRows)
+        {               
+            using DataTable dt = await Commands.GetDataTableAsync(sql, timeOut);
+            if (dt.Rows.Count > 0)
             {
-                if (dr.Read())                                      // leer los datos
-                    datoRetorno = dr[colSQL].ToString();      // obtener el campo deseado
-                else
-                    datoRetorno = string.Empty;
+                datoRetorno = dt.Rows[0][colSQL].ToString();
             }
             else
                 datoRetorno = string.Empty;
-            dr.Close();                                     // cerrar la consulta
-
         }
         catch (Exception exConexion)
         {
@@ -83,13 +65,8 @@ internal class Management : SqlBaseCommands
         bool retorno = false;
         try
         {
-            QHelpers.CheckQuery(sql);
-            using SqlCommand command = new SqlCommand();
-            command.CommandText = sql;
-            command.CommandTimeout = timeout;
-            using SqlDataReader dr = Commands.Reader(command);
-            retorno = dr.HasRows;
-            dr.Close();                                     // cerrar la consulta
+            using DataTable dt = Commands.GetDataTable(sql, timeout);
+            retorno = dt.Rows.Count > 0;
         }
         catch (Exception ex)
         {
@@ -108,11 +85,8 @@ internal class Management : SqlBaseCommands
         bool retorno = false;
         try
         {
-            using SqlCommand command = new SqlCommand();
-            command.CommandTimeout = timeout;
-            using SqlDataReader dr = await Commands.ReaderAsync(command);
-            retorno = dr.HasRows;
-            dr.Close();
+            using DataTable dt = await Commands.GetDataTableAsync(sql, timeout);
+            retorno = dt.Rows.Count > 0;
         }
         catch (Exception ex)
         {
@@ -134,7 +108,6 @@ internal class Management : SqlBaseCommands
 
         try
         {
-            QHelpers.CheckQuery(sql);
             string dato = GetColAync(sql, 0).Result;
             newId = Convert.ToInt32(dato);
             newId++;
@@ -157,7 +130,6 @@ internal class Management : SqlBaseCommands
         int newId = -1;
         try
         {
-            QHelpers.CheckQuery(sql);
             string dato = GetColAync(sql, 0).Result;
             if (string.IsNullOrEmpty(dato)) newId = 0;
             else newId = Convert.ToInt32(dato);
