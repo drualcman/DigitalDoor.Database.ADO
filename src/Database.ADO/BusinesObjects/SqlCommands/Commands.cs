@@ -109,7 +109,6 @@ internal class Commands : SqlBaseCommands
                 cmd.Connection = cn;
                 cmd.CommandTimeout = timeout;
                 cmd.Connection.Open();
-                cmd.CommandTimeout = timeout;
                 result = cmd.ExecuteReader();                
                 if(LogResults) log.end(result);
             }
@@ -124,7 +123,6 @@ internal class Commands : SqlBaseCommands
             log.start("ExecuteCommand(cmd)", "", ConnectionString);
             log.end(result.ToString(), "CMD is null");
         }
-
         return result;
     }
     #endregion
@@ -176,7 +174,6 @@ internal class Commands : SqlBaseCommands
             log.start("Execute(cmd)", cmd.CommandText, ConnectionString);
             try
             {
-
                 using SqlConnection cn = new SqlConnection(ConnectionString);
                 cmd.Connection = cn;
                 cmd.CommandTimeout = timeout;
