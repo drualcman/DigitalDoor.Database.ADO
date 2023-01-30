@@ -1,4 +1,4 @@
-﻿namespace Database.ADO.Entities.ValueObjects;
+﻿namespace Database.Entities.ValueObjects;
 
 public sealed record TableName(string Name, string ShortName,
     string ShortReference, InnerDirection Inner, string Column,

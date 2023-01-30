@@ -1,2 +1,2 @@
-﻿namespace Database.ADO.Entities.ValueObjects;
+﻿namespace Database.Entities.ValueObjects;
 public record struct LogOptions(bool LogResults = false, string LogFolder = "");

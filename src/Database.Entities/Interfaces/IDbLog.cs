@@ -1,4 +1,4 @@
-﻿namespace Database.ADO.Entities.Interfaces;
+﻿namespace Database.Entities.Interfaces;
 
 /// <summary>
 /// This class is use for tracking

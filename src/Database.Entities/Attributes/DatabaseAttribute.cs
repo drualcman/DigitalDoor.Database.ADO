@@ -1,4 +1,4 @@
-﻿namespace Database.ADO.Entities.Attributes;
+﻿namespace Database.Entities.Attributes;
 
 public class DatabaseAttribute : Attribute
 {

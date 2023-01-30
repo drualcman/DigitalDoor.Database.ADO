@@ -1,4 +1,4 @@
-﻿namespace Database.ADO.Entities.ValueObjects;
+﻿namespace Database.Entities.ValueObjects;
 
 public enum InnerDirection
 {
