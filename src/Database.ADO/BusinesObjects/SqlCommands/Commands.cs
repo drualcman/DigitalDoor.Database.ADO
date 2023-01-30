@@ -105,23 +105,18 @@ internal class Commands : SqlBaseCommands
             log.start("Reader(cmd)", cmd.CommandText, ConnectionString);
             try
             {
-                using SqlConnection cn = new SqlConnection(ConnectionString);
+                SqlConnection cn = new SqlConnection(ConnectionString);
                 cmd.Connection = cn;
                 cmd.CommandTimeout = timeout;
                 cmd.Connection.Open();
                 cmd.CommandTimeout = timeout;
-                result = cmd.ExecuteReader();
-                cmd.Connection.Close();
+                result = cmd.ExecuteReader();                
                 if(LogResults) log.end(result);
             }
             catch(Exception ex)
             {
                 result = null;
                 log.end(result, ex);
-            }
-            finally
-            {
-                cmd.Dispose();
             }
         }
         else
