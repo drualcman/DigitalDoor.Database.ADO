@@ -23,23 +23,33 @@ internal class QueryHelpers
     #region security     
     public void CheckQuery(string sql)
     {
+        sql = sql.Trim();
         ChecInjection(sql);
-        if(!sql.ToUpper().StartsWith("UPDATE "))
+        if(!sql.ToUpper().StartsWith("SELECT "))
         {
-            if(!sql.ToUpper().StartsWith("INSERT "))
+            if(!sql.ToUpper().StartsWith("EXEC "))
             {
-                if(!sql.ToUpper().StartsWith("DELETE "))
+                if(!sql.ToUpper().StartsWith("DECLARE "))
                 {
-                    if(!sql.ToUpper().StartsWith("EXEC "))
+                    if(!sql.ToUpper().StartsWith("WITH "))
                     {
-                        if(!sql.ToUpper().StartsWith("DROP "))
+                        if(!sql.ToUpper().StartsWith("INSERT "))
                         {
-                            if(!sql.ToUpper().StartsWith("ALTER "))
+                            if(!sql.ToUpper().StartsWith("DELETE "))
                             {
-                                if(!sql.ToUpper().StartsWith("CREATE "))
+                                if(!sql.ToUpper().StartsWith("UPDATE "))
                                 {
-                                    if(!sql.ToUpper().StartsWith("SELECT "))
-                                        ThrowException(sql, "Check your query");
+                                    if(!sql.ToUpper().StartsWith("DROP "))
+                                    {
+                                        if(!sql.ToUpper().StartsWith("ALTER "))
+                                        {
+                                            if(!sql.ToUpper().StartsWith("CREATE "))
+                                            {
+                                                ThrowException(sql, "Check your query");
+                                            }
+                                        }
+
+                                    }
                                 }
                             }
                         }
@@ -84,18 +94,17 @@ internal class QueryHelpers
         {
             if(!string.IsNullOrEmpty(query))
             {
-                if(query.ToUpper().IndexOf("INFORMATION_SCHEMA") >= 0)
+                if(query.ToUpper().Contains("INFORMATION_SCHEMA"))
                     resultado = false;
-                else if(query.ToLower().IndexOf("sysobjects") >= 0)
+                else if(query.ToLower().Contains("sysobjects"))
                     resultado = false;
-                else if(query.ToLower().IndexOf("syscolumns") >= 0)
+                else if(query.ToLower().Contains("syscolumns"))
                     resultado = false;
-                else if(query.ToUpper().IndexOf("BENCHMARK(") >= 0)
+                else if(query.ToUpper().Contains("BENCHMARK("))
                     resultado = false;
                 else if(this.CharControl == true)
                 {
-                    int tiene = query.ToLower().IndexOf("chr(");
-                    if(tiene >= 0)
+                    if(query.ToLower().Contains("chr("))
                         resultado = false;
                     else
                         resultado = true;
