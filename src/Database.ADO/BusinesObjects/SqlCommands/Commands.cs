@@ -87,6 +87,7 @@ internal class Commands : SqlBaseCommands
         {
             result = null;
             log.end(result, ex);
+            throw;
         }
         finally
         {
