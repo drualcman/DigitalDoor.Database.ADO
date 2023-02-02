@@ -43,9 +43,12 @@ internal class QueryHelpers
                                     {
                                         if(!sql.ToUpper().StartsWith("ALTER "))
                                         {
-                                            if(!sql.ToUpper().StartsWith("CREATE "))
+                                            if(!sql.ToUpper().StartsWith("IF "))
                                             {
-                                                ThrowException(sql, "Check your query");
+                                                if(!sql.ToUpper().StartsWith("CREATE "))
+                                                {
+                                                    ThrowException(sql, "Check your query");
+                                                }
                                             }
                                         }
 
