@@ -23,7 +23,7 @@ internal class QueryHelpers
     #region security     
     public void CheckQuery(string sql)
     {
-        sql = sql.Trim();
+        sql = CleanUpSqlSpacesNewLinesAndTabs(sql);
         ChecInjection(sql);
         if(!sql.ToUpper().StartsWith("SELECT "))
         {
@@ -61,6 +61,14 @@ internal class QueryHelpers
             }
         }
     }
+
+    private string CleanUpSqlSpacesNewLinesAndTabs(string sql) => 
+        sql.Replace(Environment.NewLine, " ")
+           .Replace("\n\r", " ")
+           .Replace("\n", " ")
+           .Replace("\r", " ")
+           .Replace("\t", " ")
+           .Trim();
 
     private void ChecInjection(string query)
     {
