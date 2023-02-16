@@ -64,6 +64,7 @@ internal class QueryHelpers
 
     private string CleanUpSqlSpacesNewLinesAndTabs(string sql) => 
         sql.Replace(Environment.NewLine, " ")
+           .Replace("\r\n", " ")
            .Replace("\n\r", " ")
            .Replace("\n", " ")
            .Replace("\r", " ")
