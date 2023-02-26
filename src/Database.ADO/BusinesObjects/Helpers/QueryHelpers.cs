@@ -1,6 +1,6 @@
 ﻿namespace Database.ADO.BusinesObjects.Helpers;
 
-internal class QueryHelpers
+internal sealed class QueryHelpers
 {
     readonly bool DatabaseControl;
     readonly bool CharControl;

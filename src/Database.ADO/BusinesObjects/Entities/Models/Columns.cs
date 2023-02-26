@@ -1,6 +1,6 @@
 ﻿namespace Database.ADO.BusinesObjects.Entities.Models;
 
-internal class Columns
+internal sealed class Columns
 {
     public string TableShortName { get; set; }
     public int TableIndex { get; set; }

@@ -1,6 +1,6 @@
 ﻿namespace Database.ADO.BusinesObjects.Helpers;
 
-internal class ColumnsNames
+internal sealed class ColumnsNames
 {
 
     readonly ReadOnlyCollection<string> Columns;

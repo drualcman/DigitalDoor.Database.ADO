@@ -1,6 +1,6 @@
 ﻿namespace Database.ADO.BusinesObjects.SqlCommands;
 
-internal class Images 
+internal sealed class Images 
 {
     readonly Commands Commands;
 

@@ -1,6 +1,6 @@
 ﻿namespace Database.ADO.BusinesObjects.Helpers;
 
-internal class ColumnToObject
+internal sealed class ColumnToObject
 {
     readonly ColumnsNames Names;
     readonly InstanceModel Model;

@@ -1,6 +1,6 @@
 ﻿namespace Database.ADO.BusinesObjects.Helpers;
 
-internal class InstanceModel
+internal sealed class InstanceModel
 {
     public void InstanceProperties<TModel>(TModel item)
     {

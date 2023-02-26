@@ -1,6 +1,6 @@
 ﻿namespace Database.ADO.BusinesObjects.Entities.Models;
 
-internal class ColumnToObjectResponse
+internal sealed class ColumnToObjectResponse
 {
     public ColumnToObjectResponse(object inUse)
     {

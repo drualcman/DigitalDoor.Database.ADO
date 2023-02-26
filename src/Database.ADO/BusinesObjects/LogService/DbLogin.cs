@@ -1,6 +1,6 @@
 ﻿namespace Database.ADO.BusinesObjects.Logs;
 
-internal class DbLogin : IDbLog
+internal sealed class DbLogin : IDbLog
 {
     public string date { get; set; }
     public string starttime { get; set; }

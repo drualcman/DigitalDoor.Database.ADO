@@ -1,6 +1,6 @@
 ﻿namespace Database.ADO.BusinesObjects.SqlCommands;
 
-internal class QueryWithModel
+internal sealed class QueryWithModel
 {
     private readonly QueryListWithModel QueryListWithModel;
 

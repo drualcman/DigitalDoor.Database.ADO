@@ -1,6 +1,6 @@
 ﻿namespace Database.ADO.BusinesObjects.SqlCommands;
 
-internal class Commands : SqlBaseCommands
+internal sealed class Commands : SqlBaseCommands
 {
     public Commands(IDbLog dbLog, bool logResults, bool databaseControl, bool charControl, string connectionString)
         : base(dbLog, logResults, databaseControl, charControl, connectionString)

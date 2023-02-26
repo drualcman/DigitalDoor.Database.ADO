@@ -1,6 +1,6 @@
 ﻿namespace Database.ADO.BusinesObjects.SqlCommands;
 
-internal class QueryListWithModel : SqlQueryBase
+internal sealed class QueryListWithModel : SqlQueryBase
 {
     public QueryListWithModel(Dictionary<string, object> requiredFields, IDbLog dbLog, bool logResults, bool databaseControl, bool charControl, string connectionString)
         : base(requiredFields, dbLog, logResults, databaseControl, charControl, connectionString)

@@ -3,7 +3,7 @@
 /// <summary>
 /// Management of MS-SQL DataBases
 /// </summary>
-internal class Management : SqlBaseCommands
+internal sealed class Management : SqlBaseCommands
 {
     readonly QueryDataTable Commands;
     public Management(IDbLog dbLog, bool logResults, bool databaseControl, bool charControl, string connectionString)

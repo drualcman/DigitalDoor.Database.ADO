@@ -1,6 +1,6 @@
 ﻿namespace Database.ADO.BusinesObjects.SqlCommands;
 
-internal class QueryDataSet : SqlQueryBase
+internal sealed class QueryDataSet : SqlQueryBase
 {
     public QueryDataSet(Dictionary<string, object> requiredFields, IDbLog dbLog, bool logResults, bool databaseControl, bool charControl, string connectionString) 
         : base(requiredFields, dbLog, logResults, databaseControl, charControl, connectionString)

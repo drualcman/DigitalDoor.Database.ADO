@@ -1,6 +1,6 @@
 ﻿namespace Database.ADO.BusinesObjects.Helpers;
 
-internal class ObjectHelpers
+internal sealed class ObjectHelpers
 {
     public static bool IsGenericList(string o)
     {

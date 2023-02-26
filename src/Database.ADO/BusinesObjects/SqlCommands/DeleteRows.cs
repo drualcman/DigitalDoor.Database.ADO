@@ -1,6 +1,6 @@
 ﻿namespace Database.ADO.BusinesObjects.SqlCommands;
 
-internal class DeleteRows
+internal sealed class DeleteRows
 {
     readonly Commands Commands;
 

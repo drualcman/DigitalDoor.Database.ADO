@@ -1,6 +1,6 @@
 ﻿namespace Database.ADO.BusinesObjects.SqlCommands;
 
-internal class Update 
+internal sealed class Update 
 {
     readonly Commands Commands;
     public Update(IDbLog dbLog, bool logResults, bool databaseControl, bool charControl, string connectionString)

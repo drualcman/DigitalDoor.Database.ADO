@@ -1,6 +1,6 @@
 ﻿namespace Database.ADO.BusinesObjects.SqlCommands;
 
-internal class Insert 
+internal sealed class Insert 
 {
     readonly Commands Commands;
     public Insert(IDbLog dbLog, bool logResults, bool databaseControl, bool charControl, string connectionString)

@@ -1,6 +1,6 @@
 ﻿namespace Database.ADO.BusinesObjects.SqlCommands;
 
-internal class QueryDataTable : SqlQueryBase
+internal sealed class QueryDataTable : SqlQueryBase
 {
     private readonly QueryDataSet DataSets;
 

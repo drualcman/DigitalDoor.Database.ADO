@@ -1,6 +1,6 @@
 ﻿namespace Database.ADO.BusinesObjects.Helpers;
 
-internal class TableNamesHelper
+internal sealed class TableNamesHelper
 {
     private List<TableName> tableNamesBK = new List<TableName>();
     public IEnumerable<TableName> TableNames => tableNamesBK;
