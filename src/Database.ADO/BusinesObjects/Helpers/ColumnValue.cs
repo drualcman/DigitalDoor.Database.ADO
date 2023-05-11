@@ -87,6 +87,9 @@ internal sealed class ColumnValue
                 case "byte":
                     sender.SetValue(destination, Convert.ToByte(value));
                     break;
+                case "time":
+                    sender.SetValue(destination, ConvertIntoTime(value));
+                    break;
                 case "date":
                     sender.SetValue(destination, ConvertIntoDate(value));
                     break;
@@ -116,6 +119,12 @@ internal sealed class ColumnValue
         }
     }
 
+    private TimeSpan ConvertIntoTime(object value)
+    {
+        if (!TimeSpan.TryParse(value.ToString(), out TimeSpan time))
+                    time = new TimeSpan(DateTime.Now.Ticks);
+        return time;
+    }  
     private DateTime ConvertIntoDate(object value)
     {
         DateTime date;

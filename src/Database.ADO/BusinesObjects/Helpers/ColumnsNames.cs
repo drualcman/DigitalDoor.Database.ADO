@@ -81,6 +81,7 @@ internal sealed class ColumnsNames
         else if (property.PropertyType.Name == typeof(float).Name) propertyType = "float";
         else if (property.PropertyType.Name == typeof(short).Name) propertyType = "short";
         else if (property.PropertyType.Name == typeof(byte).Name) propertyType = "byte";
+        else if (property.PropertyType.Name == typeof(TimeSpan).Name) propertyType = "time";
         else if (property.PropertyType.Name == typeof(DateTime).Name) propertyType = "date";
         else if (property.PropertyType.Name == typeof(Nullable).Name) propertyType = "nullable";
         else if (property.PropertyType.Name == typeof(Nullable<>).Name) propertyType = "nullable";
