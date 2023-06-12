@@ -244,4 +244,12 @@ public class DataBaseWithADO
     public TModel Get<TModel>(string sql = "", int timeout = 30) where TModel : new() => CreatQueryWithModel().Get<TModel>(sql, timeout);
     public Task<TModel> GetAsync<TModel>(string sql = "", int timeout = 30) where TModel : new() => CreatQueryWithModel().GetAsync<TModel>(sql, timeout);
     #endregion
+
+    #region wrapper bulk actions 
+    public async Task<bool> BulkCopyAsync(DataTable dt, string destinationTableName, int timeout = 660)
+    {
+        BulkCommands cbulkCommand = new BulkCommands(LogService, Options.LogOptions.LogResults, ConnectionStringBK);
+        return await cbulkCommand.BulkCopyAsync(dt, destinationTableName, timeout);
+    }
+    #endregion
 }
