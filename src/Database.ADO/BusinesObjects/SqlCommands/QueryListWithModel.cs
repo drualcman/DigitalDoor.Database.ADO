@@ -18,7 +18,7 @@ internal sealed class QueryListWithModel : SqlQueryBase
     #region async
     public async Task<List<TModel>> ModelListAsync<TModel>(string sql = "", int timeout = 30) where TModel : new()
     {
-        log.start("ToList", sql, "");
+        Log.start("ToList", sql, "");
         // If a query is empty create the query from the Model
 
         if (string.IsNullOrWhiteSpace(sql))
@@ -51,7 +51,7 @@ internal sealed class QueryListWithModel : SqlQueryBase
     /// </returns>
     public Task<List<TModel>> ModelListAsync<TModel>(SqlCommand cmd, int timeout = 30) where TModel : new()
     {
-        log.start("ToList", cmd.CommandText, "");
+        Log.start("ToList", cmd.CommandText, "");
         try
         {
             using SqlConnection cn = new SqlConnection(ConnectionString);
@@ -135,7 +135,7 @@ internal sealed class QueryListWithModel : SqlQueryBase
         }
         catch (Exception ex)
         {
-            log.end(cmd.CommandText, ex.ToString());
+            Log.end(cmd.CommandText, ex.ToString());
             throw;
         }
     }

@@ -12,7 +12,7 @@ internal sealed class QueryDataTable : SqlQueryBase
     public DataTable GetDataTable<TModel>(int timeout = 30) => GetDataTable(SetQuery<TModel>(), timeout);
     public DataTable GetDataTable(string sql, int timeout = 30)
     {
-        log.start("GetDataTable", sql, "");
+        Log.start("GetDataTable", sql, "");
         return DataSets.GetDataSet(sql, timeout).Tables[0];
     }
     #endregion
@@ -21,7 +21,7 @@ internal sealed class QueryDataTable : SqlQueryBase
     public Task<DataTable> GetDataTableAsync<TModel>(int timeout = 30) => GetDataTableAsync(SetQuery<TModel>(), timeout);
     public async Task<DataTable> GetDataTableAsync(string query, int timeout = 30)
     {
-        log.start("GetDataTableAsync", query, "");
+        Log.start("GetDataTableAsync", query, "");
         DataSet ds = await DataSets.GetDataSetAsync(query, timeout);
         DataTable dt = ds.Tables[0];
         ds.Dispose();

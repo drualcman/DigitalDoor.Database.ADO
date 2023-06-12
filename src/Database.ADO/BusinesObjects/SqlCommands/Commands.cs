@@ -10,7 +10,7 @@ internal sealed class Commands : SqlBaseCommands
     #region direct query queries      
     public object Execute(string query, int timeout = 30)
     {
-        log.start("EjecutarSQL(query)", query, "");
+        Log.start("EjecutarSQL(query)", query, "");
         QHelpers.CheckQuery(query);
         using SqlCommand cmd = new SqlCommand();
         cmd.CommandText = query;
@@ -18,12 +18,12 @@ internal sealed class Commands : SqlBaseCommands
         try
         {
             result = Execute(cmd, timeout);
-            if(LogResults) log.end(result);
+            if(LogResults) Log.end(result);
         }
         catch(Exception ex)
         {
             result = null;
-            log.end(result, ex);
+            Log.end(result, ex);
             throw;
         }
         finally
@@ -71,7 +71,7 @@ internal sealed class Commands : SqlBaseCommands
     public object Execute(SqlCommand cmd, int timeout = 30)
     {
         object result;
-        log.start("Execute(cmd)", cmd.CommandText, ConnectionString);
+        Log.start("Execute(cmd)", cmd.CommandText, ConnectionString);
         try
         {
             using SqlConnection cn = new SqlConnection(ConnectionString);
@@ -79,14 +79,15 @@ internal sealed class Commands : SqlBaseCommands
             cmd.CommandTimeout = timeout;
             cmd.Connection.Open();
             cmd.CommandTimeout = timeout;
-            result = cmd.ExecuteScalar();
+            if(cmd.CommandText.ToLower().StartsWith("create") || cmd.CommandText.ToLower().StartsWith("drop")) result = cmd.ExecuteNonQuery();
+            else result = cmd.ExecuteScalar();
             cmd.Connection.Close();
-            if(LogResults) log.end(result?.ToString());
+            if(LogResults) Log.end(result?.ToString());
         }
         catch(Exception ex)
         {
             result = null;
-            log.end(result, ex);
+            Log.end(result, ex);
             throw;
         }
         finally
@@ -109,7 +110,7 @@ internal sealed class Commands : SqlBaseCommands
         object result = null;
         if(cmd != null)
         {
-            log.start("Execute(cmd)", cmd.CommandText, ConnectionString);
+            Log.start("Execute(cmd)", cmd.CommandText, ConnectionString);
             try
             {
                 using SqlConnection cn = new SqlConnection(ConnectionString);
@@ -117,14 +118,15 @@ internal sealed class Commands : SqlBaseCommands
                 cmd.CommandTimeout = timeout;
                 await cmd.Connection.OpenAsync();
                 cmd.CommandTimeout = timeout;
-                result = await cmd.ExecuteScalarAsync();
+                if(cmd.CommandText.ToLower().StartsWith("create") || cmd.CommandText.ToLower().StartsWith("drop")) result = await cmd.ExecuteNonQueryAsync();
+                else result = await cmd.ExecuteScalarAsync();
                 await cmd.Connection.CloseAsync();
-                if(LogResults) log.end(result?.ToString());
+                if(LogResults) Log.end(result?.ToString());
             }
             catch(Exception ex)
             {
                 result = null;
-                log.end(result, ex);
+                Log.end(result, ex);
                 throw;
             }
             finally
@@ -134,8 +136,8 @@ internal sealed class Commands : SqlBaseCommands
         }
         else
         {
-            log.start("ExecuteCommand(cmd)", "", ConnectionString);
-            log.end(result.ToString(), "CMD is null");
+            Log.start("ExecuteCommand(cmd)", "", ConnectionString);
+            Log.end(result.ToString(), "CMD is null");
         }
         return result;
     }

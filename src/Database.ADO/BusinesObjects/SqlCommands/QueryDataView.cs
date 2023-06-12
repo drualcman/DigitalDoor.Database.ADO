@@ -13,7 +13,7 @@ internal sealed class QueryDataView : SqlQueryBase
         GetDataView(SetQuery<TModel>(), timeout);
     public DataView GetDataView(string sql, int timeout = 30)
     {
-        log.start("GetDataView", sql, "");
+        Log.start("GetDataView", sql, "");
         return DataTables.GetDataTable(sql, timeout).DefaultView;
     }
     #endregion
@@ -28,7 +28,7 @@ internal sealed class QueryDataView : SqlQueryBase
 
     public async Task<DataView> DataViewAsync(string query, int timeout = 30)
     {
-        log.start("DataViewAsync", query, "");
+        Log.start("DataViewAsync", query, "");
         DataTable dt = await DataTables.GetDataTableAsync(query, timeout);
         DataView dv = dt.DefaultView;
         return dv;

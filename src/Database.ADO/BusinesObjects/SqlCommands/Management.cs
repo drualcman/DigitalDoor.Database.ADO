@@ -12,7 +12,7 @@ internal sealed class Management : SqlBaseCommands
 
     public async Task<string> GetColAync(string sql, string colSQL, int timeOut = 30)
     {
-        log.start("GetColAync(sql, colSQL, timeOut)", sql, colSQL.ToString() + ", " + timeOut.ToString());
+        Log.start("GetColAync(sql, colSQL, timeOut)", sql, colSQL.ToString() + ", " + timeOut.ToString());
         string datoRetorno = string.Empty;
         try
         {
@@ -26,17 +26,17 @@ internal sealed class Management : SqlBaseCommands
         }
         catch (Exception exConexion)
         {
-            log.end(null, exConexion.ToString());
+            Log.end(null, exConexion.ToString());
             throw;
         }
         if (LogResults)
-            log.end(datoRetorno);
+            Log.end(datoRetorno);
         return datoRetorno;
     }
 
     public async Task<string> GetColAync(string sql, int colSQL, int timeOut = 30)
     {
-        log.start("GetColAync(sql, colSQL, timeOut)", sql, colSQL.ToString() + ", " + timeOut.ToString());
+        Log.start("GetColAync(sql, colSQL, timeOut)", sql, colSQL.ToString() + ", " + timeOut.ToString());
         string datoRetorno = string.Empty;
         try
         {               
@@ -50,18 +50,18 @@ internal sealed class Management : SqlBaseCommands
         }
         catch (Exception exConexion)
         {
-            log.end(null, exConexion.ToString());
+            Log.end(null, exConexion.ToString());
             throw;
         }
         if (LogResults)
-            log.end(datoRetorno);
+            Log.end(datoRetorno);
 
         return datoRetorno;
     }
 
     public bool HasRows(string sql, int timeout = 30)
     {
-        log.start("ExisteEnDDBB(sql)", sql, "");
+        Log.start("ExisteEnDDBB(sql)", sql, "");
         bool retorno = false;
         try
         {
@@ -70,18 +70,18 @@ internal sealed class Management : SqlBaseCommands
         }
         catch (Exception ex)
         {
-            log.end(sql, ex.ToString());
+            Log.end(sql, ex.ToString());
             throw;
         }
         if (LogResults)
-            log.end(retorno);
+            Log.end(retorno);
         return retorno;
     }
 
     public async Task<bool> HasRowsAsync(string sql, int timeout = 30)
     {
 
-        log.start("ExisteEnDDBB(sql)", sql, "");
+        Log.start("ExisteEnDDBB(sql)", sql, "");
         bool retorno = false;
         try
         {
@@ -90,11 +90,11 @@ internal sealed class Management : SqlBaseCommands
         }
         catch (Exception ex)
         {
-            log.end(sql, ex.ToString());
+            Log.end(sql, ex.ToString());
             throw;
         }
         if (LogResults)
-            log.end(retorno);
+            Log.end(retorno);
         return retorno;
     }
 
@@ -102,7 +102,7 @@ internal sealed class Management : SqlBaseCommands
     {
         string sql = "SELECT IDENT_CURRENT('" + Tabla + "')";
 
-        log.start("ObtenerNuevoId(tabla)", sql, Tabla);
+        Log.start("ObtenerNuevoId(tabla)", sql, Tabla);
 
         int newId = -1;
 
@@ -114,11 +114,11 @@ internal sealed class Management : SqlBaseCommands
         }
         catch (Exception ex)
         {
-            log.end(sql, ex.ToString());
+            Log.end(sql, ex.ToString());
             throw;
         }
         if (LogResults)
-            log.end(newId);
+            Log.end(newId);
         return newId;
     }
 
@@ -126,7 +126,7 @@ internal sealed class Management : SqlBaseCommands
     {
         string sql = "SELECT TOP 1 " + col + " FROM " + Tabla +
             " ORDER BY " + col + " DESC";
-        log.start("ObtenerNuevoId(tabla, col)", sql, Tabla + "," + col);
+        Log.start("ObtenerNuevoId(tabla, col)", sql, Tabla + "," + col);
         int newId = -1;
         try
         {
@@ -137,11 +137,11 @@ internal sealed class Management : SqlBaseCommands
         }
         catch (Exception ex)
         {
-            log.end(sql, ex.ToString());
+            Log.end(sql, ex.ToString());
             throw;
         }
         if (LogResults)
-            log.end(newId);
+            Log.end(newId);
         return newId;
     }
 }

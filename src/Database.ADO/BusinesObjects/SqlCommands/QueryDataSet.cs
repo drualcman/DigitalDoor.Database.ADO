@@ -11,7 +11,7 @@ internal sealed class QueryDataSet : SqlQueryBase
     public DataSet GetDataSet<TModel>(int timeout = 30) => GetDataSet(SetQuery<TModel>(), timeout);
     public DataSet GetDataSet(string sql, int timeout = 30)
     {
-        log.start("GetDataSet", sql, "");
+        Log.start("GetDataSet", sql, "");
         QHelpers.CheckQuery(sql);
         try
         {
@@ -27,12 +27,12 @@ internal sealed class QueryDataSet : SqlQueryBase
             }
             catch (Exception ex)
             {
-                log.end(null, ex.ToString());
+                Log.end(null, ex.ToString());
                 throw;
             }
             finally
             {
-                if (LogResults) log.end(ds);
+                if (LogResults) Log.end(ds);
 
             }
 
@@ -40,7 +40,7 @@ internal sealed class QueryDataSet : SqlQueryBase
         }
         catch (Exception ex)
         {
-            log.end(sql, ex.ToString());
+            Log.end(sql, ex.ToString());
 
             throw;
         }
