@@ -66,8 +66,6 @@ internal sealed class DbLogin : IDbLog
         vars = Vars;
     }
 
-
-
     public void register(string Function)
     {
         register(Function, "", "", "");
