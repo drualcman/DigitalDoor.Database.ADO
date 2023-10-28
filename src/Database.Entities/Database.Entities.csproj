@@ -3,6 +3,34 @@
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
+	  <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+	  <Version>0.1.0</Version>
+	  <Authors>Sergi Ortiz Gomez</Authors>
+	  <Company>Digital Door</Company>
+	  <Description>Basic Simple ORM objects.</Description>
+	  <Copyright>Free</Copyright>
+	  <PackageLicenseFile>License.txt</PackageLicenseFile>
+	  <PackageTags>database</PackageTags>
+	  <PackageReleaseNotes>Only tested with MS-SQL.</PackageReleaseNotes>
+	  <RepositoryUrl>https://github.com/drualcman/DigitalDoor.Database.ADO</RepositoryUrl>
+	  <RepositoryType>Git</RepositoryType>
+	  <PackageProjectUrl>https://github.com/drualcman/DigitalDoor.Database.ADO</PackageProjectUrl>
+	  <PackageReadmeFile>README.md</PackageReadmeFile>
+	  <ErrorReport>send</ErrorReport>
+	  <GenerateDocumentationFile>True</GenerateDocumentationFile>
+	  <Nullable>disable</Nullable>
+	  <Title>DigitalDoor.Database.Entities</Title>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Update="License.txt">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+    <None Update="README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
 
 </Project>
