@@ -9,7 +9,7 @@ internal sealed class QueryDataTable : SqlQueryBase
         => DataSets = new(requiredFields, dbLog, logResults, databaseControl, charControl, connectionString);
 
     #region direct queries    
-    public DataTable GetDataTable<TModel>(int timeout = 30) => GetDataTable(SetQuery<TModel>(), timeout);
+    public DataTable GetDataTable<TModel>(int timeout = 30, string indexColumn = "", int pageNumber = 0, int numElements = 0) => GetDataTable(SetQuery<TModel>(indexColumn, pageNumber, numElements), timeout);
     public DataTable GetDataTable(string sql, int timeout = 30)
     {
         Log.start("GetDataTable", sql, "");
@@ -18,7 +18,7 @@ internal sealed class QueryDataTable : SqlQueryBase
     #endregion
 
     #region tasks  
-    public Task<DataTable> GetDataTableAsync<TModel>(int timeout = 30) => GetDataTableAsync(SetQuery<TModel>(), timeout);
+    public Task<DataTable> GetDataTableAsync<TModel>(int timeout = 30, string indexColumn = "", int pageNumber = 0, int numElements = 0) => GetDataTableAsync(SetQuery<TModel>(indexColumn, pageNumber, numElements), timeout);
     public async Task<DataTable> GetDataTableAsync(string query, int timeout = 30)
     {
         Log.start("GetDataTableAsync", query, "");

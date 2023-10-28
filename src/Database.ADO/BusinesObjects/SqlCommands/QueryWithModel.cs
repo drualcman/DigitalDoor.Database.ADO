@@ -8,12 +8,13 @@ internal sealed class QueryWithModel
         => QueryListWithModel = new(requiredFields, dbLog, logResults, databaseControl, charControl, connectionString);
 
 
-    #region direct queries
+    #region direct queries                           
     /// <summary>
     /// Executer query and return List of model send
     /// </summary>
     /// <typeparam name="TModel"></typeparam>
-    /// <param name="query"></param>
+    /// <param name="query"></param>  
+    /// <param name="timeout"></param>
     /// <returns></returns>
     public TModel Get<TModel>(string query = "", int timeout = 30) where TModel : new()
     {
@@ -23,12 +24,13 @@ internal sealed class QueryWithModel
     }
     #endregion
 
-    #region async
+    #region async 
     /// <summary>
     /// Executer query and return List of model send
     /// </summary>
     /// <typeparam name="TModel"></typeparam>
-    /// <param name="query"></param>
+    /// <param name="query"></param> 
+    /// <param name="timeout"></param>
     /// <returns></returns>
     public async Task<TModel> GetAsync<TModel>(string query = "", int timeout = 30) where TModel : new()
     {

@@ -8,7 +8,7 @@ internal sealed class QueryDataSet : SqlQueryBase
     }
 
     #region direct queries    
-    public DataSet GetDataSet<TModel>(int timeout = 30) => GetDataSet(SetQuery<TModel>(), timeout);
+    public DataSet GetDataSet<TModel>(int timeout = 30, string indexColumn = "", int pageNumber = 0, int numElements = 0) => GetDataSet(SetQuery<TModel>(indexColumn, pageNumber, numElements), timeout);
     public DataSet GetDataSet(string sql, int timeout = 30)
     {
         Log.start("GetDataSet", sql, "");
@@ -49,7 +49,7 @@ internal sealed class QueryDataSet : SqlQueryBase
     #endregion region
 
     #region tasks 
-    public Task<DataSet> GetDataSetAsync<TModel>(int timeout = 30) => GetDataSetAsync(SetQuery<TModel>(), timeout);
+    public Task<DataSet> GetDataSetAsync<TModel>(int timeout = 30, string indexColumn = "", int pageNumber = 0, int numElements = 0) => GetDataSetAsync(SetQuery<TModel>(indexColumn, pageNumber, numElements), timeout);
     public Task<DataSet> GetDataSetAsync(string query, int timeout = 30) =>
         Task.FromResult(GetDataSet(query, timeout));
     #endregion

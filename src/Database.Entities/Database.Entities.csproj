@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
@@ -17,7 +17,6 @@
 	  <PackageProjectUrl>https://github.com/drualcman/DigitalDoor.Database.ADO</PackageProjectUrl>
 	  <PackageReadmeFile>README.md</PackageReadmeFile>
 	  <ErrorReport>send</ErrorReport>
-	  <GenerateDocumentationFile>True</GenerateDocumentationFile>
 	  <Nullable>disable</Nullable>
 	  <Title>DigitalDoor.Database.Entities</Title>
   </PropertyGroup>

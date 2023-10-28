@@ -9,8 +9,8 @@ internal sealed class QueryDataView : SqlQueryBase
         => DataTables = new(requiredFields, dbLog, logResults, databaseControl, charControl, connectionString);
 
     #region direct queries
-    public DataView GetDataView<TModel>(int timeout = 30) =>
-        GetDataView(SetQuery<TModel>(), timeout);
+    public DataView GetDataView<TModel>(int timeout = 30, string indexColumn = "", int pageNumber = 0, int numElements = 0) =>
+        GetDataView(SetQuery<TModel>(indexColumn, pageNumber, numElements), timeout);
     public DataView GetDataView(string sql, int timeout = 30)
     {
         Log.start("GetDataView", sql, "");
@@ -19,9 +19,9 @@ internal sealed class QueryDataView : SqlQueryBase
     #endregion
 
     #region tasks   
-    public async Task<DataView> DataViewAsync<TModel>(int timeout = 30)
+    public async Task<DataView> DataViewAsync<TModel>(int timeout = 30, string indexColumn = "", int pageNumber = 0, int numElements = 0)
     {
-        DataTable dt = await DataTables.GetDataTableAsync<TModel>(timeout);
+        DataTable dt = await DataTables.GetDataTableAsync<TModel>(timeout, indexColumn, pageNumber, numElements);
         DataView dv = dt.DefaultView;
         return dv;
     }

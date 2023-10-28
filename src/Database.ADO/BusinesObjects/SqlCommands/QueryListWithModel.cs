@@ -8,15 +8,15 @@ internal sealed class QueryListWithModel : SqlQueryBase
     }
 
     #region direct queries
-    public List<TModel> ModelList<TModel>(string sql = "", int timeout = 30) where TModel : new() =>
-        ModelListAsync<TModel>(sql, timeout).Result;
+    public List<TModel> ModelList<TModel>(string sql = "", int timeout = 30, string indexColumn = "", int pageNumber = 0, int numElements = 0) where TModel : new() =>
+        ModelListAsync<TModel>(sql, timeout, indexColumn, pageNumber, numElements).Result;
 
     public List<TModel> ModelList<TModel>(SqlCommand cmd, int timeout = 30) where TModel : new() =>
         ModelListAsync<TModel>(cmd, timeout).Result;
     #endregion
 
     #region async
-    public async Task<List<TModel>> ModelListAsync<TModel>(string sql = "", int timeout = 30) where TModel : new()
+    public async Task<List<TModel>> ModelListAsync<TModel>(string sql = "", int timeout = 30, string indexColumn = "", int pageNumber = 0, int numElements = 0) where TModel : new()
     {
         Log.start("ToList", sql, "");
         // If a query is empty create the query from the Model
@@ -24,7 +24,7 @@ internal sealed class QueryListWithModel : SqlQueryBase
         if (string.IsNullOrWhiteSpace(sql))
         {
             SqlQueryTranslator queryTranslator = new SqlQueryTranslator(RequiredFields);
-            sql = queryTranslator.SetQuery<TModel>();
+            sql = queryTranslator.SetQuery<TModel>(indexColumn, pageNumber, numElements);
         }
         else
         {

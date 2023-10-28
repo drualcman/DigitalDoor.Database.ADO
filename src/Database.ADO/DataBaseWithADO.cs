@@ -39,19 +39,21 @@ public class DataBaseWithADO
     #region Constructors
 
     #region For Injection
-    public DataBaseWithADO(Microsoft.Extensions.Options.IOptions<DatabaseOptions> options)
+    public DataBaseWithADO(Microsoft.Extensions.Options.IOptions<DatabaseOptions> options, IDbLog loger = null)
     {
         ConnectionStringBK = options.Value.ConnectionString;
         Options = options.Value.Options;
         WhereRequired =  options.Value.Params?.ToDictionary(x => x.ColumnName, x => x.Value);
+        SetLogger(loger);
     }
-    public DataBaseWithADO(Action<DatabaseOptions> action)
+    public DataBaseWithADO(Action<DatabaseOptions> action, IDbLog loger = null)
     {
         DatabaseOptions options = new();
         action(options);
         ConnectionStringBK = options.ConnectionString;
         Options = options.Options;
-        WhereRequired = options.Params?.ToDictionary(x => x.ColumnName, x => x.Value);
+        WhereRequired = options.Params?.ToDictionary(x => x.ColumnName, x => x.Value); 
+        SetLogger(loger);
     }
     #endregion
     #region To instance
@@ -142,10 +144,10 @@ public class DataBaseWithADO
         return WhereRequired.Where(k => k.Key == key).FirstOrDefault().Value;
     }
 
-    public string SetQuery<TModel>()
+    public string SetQuery<TModel>(string indexColumn = "", int pageNumber = 1, int numElements = 0)
     {
         SqlQueryTranslator queryTranslator = new SqlQueryTranslator(WhereRequired);
-        return queryTranslator.SetQuery<TModel>();
+        return queryTranslator.SetQuery<TModel>(indexColumn, pageNumber, numElements);
     }
     #endregion
 
@@ -229,36 +231,46 @@ public class DataBaseWithADO
 
     #region wrapper QueryDataSet                                  
     private QueryDataSet CreateQueryDataSet() => new(WhereRequired, LogService, Options.LogOptions.LogResults, Options.EnableSqlInjectionControl, Options.EnableCharControl, ConnectionStringBK);
+    public DataSet GetDataSet<TModel>(string indexColumn, int pageNumber, int numElements,int timeout = 30) => CreateQueryDataSet().GetDataSet<TModel>(timeout, indexColumn, pageNumber, numElements);
     public DataSet GetDataSet<TModel>(int timeout = 30) => CreateQueryDataSet().GetDataSet<TModel>(timeout);
     public DataSet GetDataSet(string sql, int timeout = 30) => CreateQueryDataSet().GetDataSet(sql, timeout);
+    public Task<DataSet> GetDataSetAsync<TModel>(string indexColumn, int pageNumber, int numElements,int timeout = 30) => CreateQueryDataSet().GetDataSetAsync<TModel>(timeout, indexColumn, pageNumber, numElements);
     public Task<DataSet> GetDataSetAsync<TModel>(int timeout = 30) => CreateQueryDataSet().GetDataSetAsync<TModel>(timeout);
     public Task<DataSet> GetDataSetAsync(string sql, int timeout = 30) => CreateQueryDataSet().GetDataSetAsync(sql, timeout);
     #endregion     
 
     #region wrapper QueryDataTable                                  
     private QueryDataTable CreatQueryDataTable() => new(WhereRequired, LogService, Options.LogOptions.LogResults, Options.EnableSqlInjectionControl, Options.EnableCharControl, ConnectionStringBK);
+    public DataTable GetDataTable<TModel>(string indexColumn, int pageNumber, int numElements, int timeout = 30) => CreatQueryDataTable().GetDataTable<TModel>(timeout, indexColumn, pageNumber, numElements);
     public DataTable GetDataTable<TModel>(int timeout = 30) => CreatQueryDataTable().GetDataTable<TModel>(timeout);
     public DataTable GetDataTable(string sql, int timeout = 30) => CreatQueryDataTable().GetDataTable(sql, timeout);
+    public Task<DataTable> GetDataTableAsync<TModel>(string indexColumn, int pageNumber, int numElements, int timeout = 30) => CreatQueryDataTable().GetDataTableAsync<TModel>(timeout, indexColumn, pageNumber, numElements);
     public Task<DataTable> GetDataTableAsync<TModel>(int timeout = 30) => CreatQueryDataTable().GetDataTableAsync<TModel>(timeout);
     public Task<DataTable> GetDataTableAsync(string sql, int timeout = 30) => CreatQueryDataTable().GetDataTableAsync(sql, timeout);
     #endregion   
 
     #region wrapper QueryDataView                                  
     private QueryDataView CreatQueryDataView() => new(WhereRequired, LogService, Options.LogOptions.LogResults, Options.EnableSqlInjectionControl, Options.EnableCharControl, ConnectionStringBK);
+    public DataView GetDataView<TModel>(string indexColumn, int pageNumber, int numElements,int timeout = 30) => CreatQueryDataView().GetDataView<TModel>(timeout, indexColumn, pageNumber, numElements);
     public DataView GetDataView<TModel>(int timeout = 30) => CreatQueryDataView().GetDataView<TModel>(timeout);
     public DataView GetDataView(string sql, int timeout = 30) => CreatQueryDataView().GetDataView(sql, timeout);
+    public Task<DataView> DataViewAsync<TModel>(string indexColumn, int pageNumber, int numElements, int timeout = 30) => CreatQueryDataView().DataViewAsync<TModel>(timeout, indexColumn, pageNumber, numElements);
     public Task<DataView> DataViewAsync<TModel>(int timeout = 30) => CreatQueryDataView().DataViewAsync<TModel>(timeout);
     public Task<DataView> DataViewAsync(string sql, int timeout = 30) => CreatQueryDataView().DataViewAsync(sql, timeout);
     #endregion 
 
     #region wrapper QueryListWithModel                                  
     private QueryListWithModel CreatQueryListWithModel() => new(WhereRequired, LogService, Options.LogOptions.LogResults, Options.EnableSqlInjectionControl, Options.EnableCharControl, ConnectionStringBK);
+    public List<TModel> ModelList<TModel>(string indexColumn, int pageNumber, int numElements, int timeout = 30) where TModel : new() => CreatQueryListWithModel().ModelList<TModel>("", timeout, indexColumn, pageNumber, numElements);
     public List<TModel> ModelList<TModel>(string sql = "", int timeout = 30) where TModel : new() => CreatQueryListWithModel().ModelList<TModel>(sql, timeout);
     public List<TModel> ModelList<TModel>(SqlCommand cmd, int timeout = 30) where TModel : new() => CreatQueryListWithModel().ModelList<TModel>(cmd, timeout);
+    public Task<List<TModel>> ModelListAsync<TModel>(string indexColumn, int pageNumber, int numElements, int timeout = 30) where TModel : new() => CreatQueryListWithModel().ModelListAsync<TModel>("", timeout, indexColumn, pageNumber, numElements);
     public Task<List<TModel>> ModelListAsync<TModel>(string sql = "", int timeout = 30) where TModel : new() => CreatQueryListWithModel().ModelListAsync<TModel>(sql, timeout);
     public Task<List<TModel>> ModelListAsync<TModel>(SqlCommand cmd, int timeout = 30) where TModel : new() => CreatQueryListWithModel().ModelListAsync<TModel>(cmd, timeout);
+    public List<TModel> List<TModel>(string indexColumn, int pageNumber, int numElements, int timeout = 30) where TModel : new() => ModelList<TModel>(indexColumn, pageNumber, numElements, timeout);
     public List<TModel> List<TModel>(string sql = "", int timeout = 30) where TModel : new() => ModelList<TModel>(sql, timeout);
     public List<TModel> List<TModel>(SqlCommand cmd, int timeout = 30) where TModel : new() => ModelList<TModel>(cmd, timeout);
+    public Task<List<TModel>> ListAsync<TModel>(string indexColumn, int pageNumber, int numElements, int timeout = 30) where TModel : new() => ModelListAsync<TModel>(indexColumn, pageNumber, numElements, timeout);
     public Task<List<TModel>> ListAsync<TModel>(string sql = "", int timeout = 30) where TModel : new() => ModelListAsync<TModel>(sql, timeout);
     public Task<List<TModel>> ListAsync<TModel>(SqlCommand cmd, int timeout = 30) where TModel : new() => ModelListAsync<TModel>(cmd, timeout);
     #endregion   
