@@ -1,4 +1,7 @@
-﻿namespace Database.ADO;
+﻿using Database.ADO.ValueObjects;
+using Microsoft.Extensions.Configuration;
+
+namespace Database.ADO;
 
 /// <summary>
 /// Management of MS-SQL DataBaseWithADO
@@ -14,7 +17,7 @@ public class DataBaseWithADO
         {
             ConnectionStringBK = value;
             //asegurarse de que
-            if (string.IsNullOrEmpty(ConnectionStringBK))
+            if(string.IsNullOrEmpty(ConnectionStringBK))
             {
                 // crear la cadena de conexion con la base de datos por defecto
                 string source = "localhost";
@@ -33,7 +36,25 @@ public class DataBaseWithADO
     private IDbLog LogService;
     #endregion
 
-    #region Constructor
+    #region Constructors
+
+    #region For Injection
+    public DataBaseWithADO(Microsoft.Extensions.Options.IOptions<DatabaseOptions> options)
+    {
+        ConnectionStringBK = options.Value.ConnectionString;
+        Options = options.Value.Options;
+        WhereRequired =  options.Value.Params?.ToDictionary(x => x.ColumnName, x => x.Value);
+    }
+    public DataBaseWithADO(Action<DatabaseOptions> action)
+    {
+        DatabaseOptions options = new();
+        action(options);
+        ConnectionStringBK = options.ConnectionString;
+        Options = options.Options;
+        WhereRequired = options.Params?.ToDictionary(x => x.ColumnName, x => x.Value);
+    }
+    #endregion
+    #region To instance
     public DataBaseWithADO()
     {
         SetLogger(null);
@@ -53,6 +74,8 @@ public class DataBaseWithADO
         WhereRequired = requiredWhereValues.ToDictionary(x => x.Key, x => x.Value);
     }
 
+    public DataBaseWithADO(string connectionString) : this()
+        => ConnectionStringBK = connectionString;
     public DataBaseWithADO(string connectionString, params KeyValuePair<string, object>[] args) : this(args)
         => ConnectionStringBK = connectionString;
     public DataBaseWithADO(string connectionString, Options options) : this(options)
@@ -69,6 +92,7 @@ public class DataBaseWithADO
     public DataBaseWithADO(string source, string catalog, string user, string pass, int poolSize, Options options, params KeyValuePair<string, object>[] args) : this(options, args)
         => SetConnectionString(source, catalog, user, pass, poolSize);
     #endregion
+    #endregion
 
     #region setup methods                          
     public void SetConnectionString(string connectionString) =>
@@ -77,14 +101,14 @@ public class DataBaseWithADO
     public void SetConnectionString(string source, string catalog, string username, string password, int poolSize = 100, string workstation = "", int packetSize = 4096, bool security = true)
     {
         StringBuilder strCadena = new();
-        if (!string.IsNullOrEmpty(source))
+        if(!string.IsNullOrEmpty(source))
         {
             strCadena.Append($"Data Source={source};Initial Catalog={catalog};Persist Security Info=");
-            if (security) strCadena.Append("true;");
+            if(security) strCadena.Append("true;");
             else strCadena.Append("false;");
             strCadena.Append($"User ID={username};Password={password};");
             strCadena.Append($"Max Pool Size={poolSize};");
-            if (!string.IsNullOrEmpty(workstation)) strCadena.Append($"workstation id={workstation};");
+            if(!string.IsNullOrEmpty(workstation)) strCadena.Append($"workstation id={workstation};");
             strCadena.Append($"packet size={packetSize};");
         }
         ConnectionStringBK = strCadena.ToString();
@@ -92,7 +116,7 @@ public class DataBaseWithADO
 
     public void SetLogger(IDbLog logger)
     {
-        if (logger == null) LogService = new DbLogin(Options.LogOptions.LogFolder);
+        if(logger == null) LogService = new DbLogin(Options.LogOptions.LogFolder);
         else LogService = logger;
     }
 
@@ -103,7 +127,7 @@ public class DataBaseWithADO
 
     public void SetWhere(string column, object value)
     {
-        if (WhereRequired.ContainsKey(column))
+        if(WhereRequired.ContainsKey(column))
         {
             WhereRequired[column] = value;
         }
@@ -118,7 +142,7 @@ public class DataBaseWithADO
         return WhereRequired.Where(k => k.Key == key).FirstOrDefault().Value;
     }
 
-    public  string SetQuery<TModel>()
+    public string SetQuery<TModel>()
     {
         SqlQueryTranslator queryTranslator = new SqlQueryTranslator(WhereRequired);
         return queryTranslator.SetQuery<TModel>();
@@ -126,7 +150,7 @@ public class DataBaseWithADO
     #endregion
 
     #region wrapper commands
-    private Commands CreateCommands() => new(LogService, Options.LogOptions.LogResults, Options.EnableDatabaseControl, Options.ChrControl, ConnectionStringBK);
+    private Commands CreateCommands() => new(LogService, Options.LogOptions.LogResults, Options.EnableSqlInjectionControl, Options.EnableCharControl, ConnectionStringBK);
     public object Execute(string query, int timeout = 30) => CreateCommands().Execute(query, timeout);
     public bool ExecuteCommand(string query, int timeout = 30) => CreateCommands().ExecuteCommand(query, timeout);
     public Task<object> ExecuteAsync(string query, int timeout = 30) => CreateCommands().ExecuteAsync(query, timeout);
@@ -138,7 +162,7 @@ public class DataBaseWithADO
     #endregion
 
     #region wrapper delete                                  
-    private DeleteRows CreateDeleteRows() => new(LogService, Options.LogOptions.LogResults, Options.EnableDatabaseControl, Options.ChrControl, ConnectionStringBK);
+    private DeleteRows CreateDeleteRows() => new(LogService, Options.LogOptions.LogResults, Options.EnableSqlInjectionControl, Options.EnableCharControl, ConnectionStringBK);
     public bool DeleteRow(string table, string indexColumn, int index) => CreateDeleteRows().DeleteRow(table, indexColumn, index);
     public bool DeleteRow(string table, string indexColumn, string index) => CreateDeleteRows().DeleteRow(table, indexColumn, index);
     public bool DeleteRow(string table, string[] indexColumn, object[] index) => CreateDeleteRows().DeleteRow(table, indexColumn, index);
@@ -150,7 +174,7 @@ public class DataBaseWithADO
     #endregion
 
     #region wrapper Images                                  
-    private Images CreateImages() => new(LogService, Options.LogOptions.LogResults, Options.EnableDatabaseControl, Options.ChrControl, ConnectionStringBK);
+    private Images CreateImages() => new(LogService, Options.LogOptions.LogResults, Options.EnableSqlInjectionControl, Options.EnableCharControl, ConnectionStringBK);
     public bool UpdateImage(string table, string indexColumn, string index, string imageColumn, string image) => CreateImages().UpdateImage(table, indexColumn, index, imageColumn, image);
     public bool UpdateImage(string table, string indexColumn, string index, string imageColumn, byte[] image) => CreateImages().UpdateImage(table, indexColumn, index, imageColumn, image);
     public bool InsertImage(string table, string imageColumn, string image) => CreateImages().InsertImage(table, imageColumn, image);
@@ -167,7 +191,7 @@ public class DataBaseWithADO
     #endregion
 
     #region wrapper Update                                  
-    private Update CreateUpdate() => new(LogService, Options.LogOptions.LogResults, Options.EnableDatabaseControl, Options.ChrControl, ConnectionStringBK);
+    private Update CreateUpdate() => new(LogService, Options.LogOptions.LogResults, Options.EnableSqlInjectionControl, Options.EnableCharControl, ConnectionStringBK);
     public bool UpdateColumn(string table, string colName, object colValue, string indexColumn, int index) => CreateUpdate().UpdateColumn(table, colName, colValue, indexColumn, index);
     public bool UpdateColumn(string table, string colName, object colValue, string indexColumn, object index) => CreateUpdate().UpdateColumn(table, colName, colValue, indexColumn, index);
     public bool UpdateColumn(string table, string[] colName, object[] colValue, string indexColumn, int index) => CreateUpdate().UpdateColumn(table, colName, colValue, indexColumn, index);
@@ -182,7 +206,7 @@ public class DataBaseWithADO
     #endregion
 
     #region wrapper Insert                                  
-    private Insert CreateInsert() => new(LogService, Options.LogOptions.LogResults, Options.EnableDatabaseControl, Options.ChrControl, ConnectionStringBK);
+    private Insert CreateInsert() => new(LogService, Options.LogOptions.LogResults, Options.EnableSqlInjectionControl, Options.EnableCharControl, ConnectionStringBK);
     public bool InsertInDB(string table, string colName, object colValue) => CreateInsert().InsertInDB(table, colName, colValue);
     public bool InsertInDB(string table, string[] colName, object[] colValue) => CreateInsert().InsertInDB(table, colName, colValue);
     public int InsertInDB(string table, string[] colName, object[] colValue, bool returnScope) => CreateInsert().InsertInDB(table, colName, colValue, returnScope);
@@ -191,20 +215,20 @@ public class DataBaseWithADO
     #endregion
 
     #region wrapper Management                                  
-    private Management CreateManagement() => new(LogService, Options.LogOptions.LogResults, Options.EnableDatabaseControl, Options.ChrControl, ConnectionStringBK);
+    private Management CreateManagement() => new(LogService, Options.LogOptions.LogResults, Options.EnableSqlInjectionControl, Options.EnableCharControl, ConnectionStringBK);
     public bool HasRows(string sql, int timeout = 30) => CreateManagement().HasRows(sql, timeout);
     public Task<bool> HasRowsAsync(string sql, int timeout = 30) => CreateManagement().HasRowsAsync(sql, timeout);
     public int GetNewId(string Tabla) => CreateManagement().GetNewId(Tabla);
     public int GetNewId(string Tabla, string col) => CreateManagement().GetNewId(Tabla, col);
     public string GetCol(string sql, string colSQL, int timeOut = 30) => GetColAync(sql, colSQL, timeOut).Result;
-    public string GetCol(string sql, int colSQL, int timeOut = 30) => GetColAync(sql, colSQL, timeOut).Result;  
+    public string GetCol(string sql, int colSQL, int timeOut = 30) => GetColAync(sql, colSQL, timeOut).Result;
     public Task<string> GetColAync(string sql, string colSQL, int timeOut = 30) => CreateManagement().GetColAync(sql, colSQL, timeOut);
     public Task<string> GetColAync(string sql, int colSQL, int timeOut = 30) => CreateManagement().GetColAync(sql, colSQL, timeOut);
 
     #endregion
 
     #region wrapper QueryDataSet                                  
-    private QueryDataSet CreateQueryDataSet() => new(WhereRequired, LogService, Options.LogOptions.LogResults, Options.EnableDatabaseControl, Options.ChrControl, ConnectionStringBK);
+    private QueryDataSet CreateQueryDataSet() => new(WhereRequired, LogService, Options.LogOptions.LogResults, Options.EnableSqlInjectionControl, Options.EnableCharControl, ConnectionStringBK);
     public DataSet GetDataSet<TModel>(int timeout = 30) => CreateQueryDataSet().GetDataSet<TModel>(timeout);
     public DataSet GetDataSet(string sql, int timeout = 30) => CreateQueryDataSet().GetDataSet(sql, timeout);
     public Task<DataSet> GetDataSetAsync<TModel>(int timeout = 30) => CreateQueryDataSet().GetDataSetAsync<TModel>(timeout);
@@ -212,7 +236,7 @@ public class DataBaseWithADO
     #endregion     
 
     #region wrapper QueryDataTable                                  
-    private QueryDataTable CreatQueryDataTable() => new(WhereRequired, LogService, Options.LogOptions.LogResults, Options.EnableDatabaseControl, Options.ChrControl, ConnectionStringBK);
+    private QueryDataTable CreatQueryDataTable() => new(WhereRequired, LogService, Options.LogOptions.LogResults, Options.EnableSqlInjectionControl, Options.EnableCharControl, ConnectionStringBK);
     public DataTable GetDataTable<TModel>(int timeout = 30) => CreatQueryDataTable().GetDataTable<TModel>(timeout);
     public DataTable GetDataTable(string sql, int timeout = 30) => CreatQueryDataTable().GetDataTable(sql, timeout);
     public Task<DataTable> GetDataTableAsync<TModel>(int timeout = 30) => CreatQueryDataTable().GetDataTableAsync<TModel>(timeout);
@@ -220,7 +244,7 @@ public class DataBaseWithADO
     #endregion   
 
     #region wrapper QueryDataView                                  
-    private QueryDataView CreatQueryDataView() => new(WhereRequired, LogService, Options.LogOptions.LogResults, Options.EnableDatabaseControl, Options.ChrControl, ConnectionStringBK);
+    private QueryDataView CreatQueryDataView() => new(WhereRequired, LogService, Options.LogOptions.LogResults, Options.EnableSqlInjectionControl, Options.EnableCharControl, ConnectionStringBK);
     public DataView GetDataView<TModel>(int timeout = 30) => CreatQueryDataView().GetDataView<TModel>(timeout);
     public DataView GetDataView(string sql, int timeout = 30) => CreatQueryDataView().GetDataView(sql, timeout);
     public Task<DataView> DataViewAsync<TModel>(int timeout = 30) => CreatQueryDataView().DataViewAsync<TModel>(timeout);
@@ -228,7 +252,7 @@ public class DataBaseWithADO
     #endregion 
 
     #region wrapper QueryListWithModel                                  
-    private QueryListWithModel CreatQueryListWithModel() => new(WhereRequired, LogService, Options.LogOptions.LogResults, Options.EnableDatabaseControl, Options.ChrControl, ConnectionStringBK);
+    private QueryListWithModel CreatQueryListWithModel() => new(WhereRequired, LogService, Options.LogOptions.LogResults, Options.EnableSqlInjectionControl, Options.EnableCharControl, ConnectionStringBK);
     public List<TModel> ModelList<TModel>(string sql = "", int timeout = 30) where TModel : new() => CreatQueryListWithModel().ModelList<TModel>(sql, timeout);
     public List<TModel> ModelList<TModel>(SqlCommand cmd, int timeout = 30) where TModel : new() => CreatQueryListWithModel().ModelList<TModel>(cmd, timeout);
     public Task<List<TModel>> ModelListAsync<TModel>(string sql = "", int timeout = 30) where TModel : new() => CreatQueryListWithModel().ModelListAsync<TModel>(sql, timeout);
@@ -240,7 +264,7 @@ public class DataBaseWithADO
     #endregion   
 
     #region wrapper QueryWithModel                                  
-    private QueryWithModel CreatQueryWithModel() => new(WhereRequired, LogService, Options.LogOptions.LogResults, Options.EnableDatabaseControl, Options.ChrControl, ConnectionStringBK);
+    private QueryWithModel CreatQueryWithModel() => new(WhereRequired, LogService, Options.LogOptions.LogResults, Options.EnableSqlInjectionControl, Options.EnableCharControl, ConnectionStringBK);
     public TModel Get<TModel>(string sql = "", int timeout = 30) where TModel : new() => CreatQueryWithModel().Get<TModel>(sql, timeout);
     public Task<TModel> GetAsync<TModel>(string sql = "", int timeout = 30) where TModel : new() => CreatQueryWithModel().GetAsync<TModel>(sql, timeout);
     #endregion

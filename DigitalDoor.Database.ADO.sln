@@ -5,7 +5,7 @@ VisualStudioVersion = 17.4.33213.308
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Database.ADO", "src\Database.ADO\Database.ADO.csproj", "{291F5181-4FC3-4902-A9DF-BF357428C8A1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Database.Entities", "src\Database.Entities\Database.Entities.csproj", "{E7BF8A5C-C868-4B9E-8C77-3CD8997683F8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Database.Entities", "src\Database.Entities\Database.Entities.csproj", "{E7BF8A5C-C868-4B9E-8C77-3CD8997683F8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
