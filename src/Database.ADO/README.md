@@ -47,3 +47,18 @@ Options.EnableSqlInjectionControl => true to prevent sql injection. Enable this 
 Options.EnableCharControl => If EnableSqlInjectionControl is true set to true to block use CHR in the queries or commands.
 Params => Enabled a default column when using class with a default value in a where if have a property match with the column name.
 Params = IEnumerable < ParamValue > where ParamValue { ColumnName = "PropertyName", "Value" = (object)DefaultValue }
+
+# Load data
+```csharp
+DataTable dataTable = database.GetDataTable<Customers>();
+DataSet ds = database.GetDataSet<Customers>();
+DataView dv = database.GetDataView<Customers>();
+List<Customers> list = database.List<Customers>();
+
+// with pagination
+DataTable dataTable = database.GetDataTable<Customers>(nameof(Customers.Id), 1, 50);
+DataSet ds = database.GetDataSet<Customers>(nameof(Customers.Id), 1, 50);
+DataView dv = database.GetDataView<Customers>(nameof(Customers.Id), 1, 50);
+List<Customers> list = database.List<Customers>(nameof(Customers.Id), 1, 50);
+```
+
