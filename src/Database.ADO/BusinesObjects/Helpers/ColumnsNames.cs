@@ -44,8 +44,12 @@ internal sealed class ColumnsNames
             string columnName;
             DatabaseAttribute field = properties[propertyIndex].GetCustomAttribute<DatabaseAttribute>();
             bool notIgnored;
-            if (field is not null)
+            string propertyName = properties[propertyIndex].Name.ToLower();
+            if(field is not null)
+            {
                 notIgnored = !field.Ignore;
+                propertyName = field.Name;
+            }
             else notIgnored = true;
             if (notIgnored)
             {
@@ -57,8 +61,8 @@ internal sealed class ColumnsNames
                 }
                 else
                 {
-                    if (isDirectQuery) columnName = properties[propertyIndex].Name.ToLower();
-                    else columnName = $"{shortName}.{properties[propertyIndex].Name}".ToLower();
+                    if (isDirectQuery) columnName = propertyName;
+                    else columnName = $"{shortName}.{propertyName}".ToLower();
                     if (Columns.Contains(columnName))
                         result.Add(SetColumn(properties[propertyIndex], shortName, columnName));
                 }

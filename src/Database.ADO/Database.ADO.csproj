@@ -4,14 +4,17 @@
      <TargetFramework>net7.0</TargetFramework>
 	  <ImplicitUsings>enable</ImplicitUsings>
 	  <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-	  <Version>0.1.1</Version>
+	  <Version>0.1.2</Version>
 	  <Authors>Sergi Ortiz Gomez</Authors>
 	  <Company>Digital Door</Company>
 	  <Description>Basic Simple ORM using ADO.</Description>
 	  <Copyright>Free</Copyright>
 	  <PackageLicenseFile>License.txt</PackageLicenseFile>
 	  <PackageTags>database, sql, ado, api, backend</PackageTags>
-	  <PackageReleaseNotes>Update READ ME and fixed null reference in loger.</PackageReleaseNotes>
+	  <PackageReleaseNotes>
+		  [2029-10-30] Fixed no get correctly the property name when is overwrite using DatabaseAttribute(Name = "") to match with table column name.
+		  [2029-10-29] Update READ ME and fixed null reference in loger.
+	  </PackageReleaseNotes>
 	  <RepositoryUrl>https://github.com/drualcman/DigitalDoor.Database.ADO</RepositoryUrl>
 	  <RepositoryType>Git</RepositoryType>
 	  <PackageProjectUrl>https://github.com/drualcman/DigitalDoor.Database.ADO</PackageProjectUrl>
