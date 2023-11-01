@@ -144,10 +144,10 @@ public class DataBaseWithADO
         return WhereRequired.Where(k => k.Key == key).FirstOrDefault().Value;
     }
 
-    public string SetQuery<TModel>(string indexColumn = "", int pageNumber = 1, int numElements = 0)
+    public string SetQuery<TModel>(string indexColumn = "", int startIndex = 0, int numElements = 0)
     {
         SqlQueryTranslator queryTranslator = new SqlQueryTranslator(WhereRequired);
-        return queryTranslator.SetQuery<TModel>(indexColumn, pageNumber, numElements);
+        return queryTranslator.SetQuery<TModel>(indexColumn, startIndex, numElements);
     }
     #endregion
 

@@ -16,7 +16,7 @@ internal sealed class QueryListWithModel : SqlQueryBase
     #endregion
 
     #region async
-    public async Task<List<TModel>> ModelListAsync<TModel>(string sql = "", int timeout = 30, string indexColumn = "", int pageNumber = 0, int numElements = 0) where TModel : new()
+    public async Task<List<TModel>> ModelListAsync<TModel>(string sql = "", int timeout = 30, string indexColumn = "", int startIndex = 0, int numElements = 0) where TModel : new()
     {
         Log.start("ToList", sql, "");
         // If a query is empty create the query from the Model
@@ -24,7 +24,7 @@ internal sealed class QueryListWithModel : SqlQueryBase
         if (string.IsNullOrWhiteSpace(sql))
         {
             SqlQueryTranslator queryTranslator = new SqlQueryTranslator(RequiredFields);
-            sql = queryTranslator.SetQuery<TModel>(indexColumn, pageNumber, numElements);
+            sql = queryTranslator.SetQuery<TModel>(indexColumn, startIndex, numElements);
         }
         else
         {

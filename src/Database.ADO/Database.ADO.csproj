@@ -4,7 +4,7 @@
      <TargetFramework>net7.0</TargetFramework>
 	  <ImplicitUsings>enable</ImplicitUsings>
 	  <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-	  <Version>0.1.2</Version>
+	  <Version>0.1.3</Version>
 	  <Authors>Sergi Ortiz Gomez</Authors>
 	  <Company>Digital Door</Company>
 	  <Description>Basic Simple ORM using ADO.</Description>
@@ -12,8 +12,9 @@
 	  <PackageLicenseFile>License.txt</PackageLicenseFile>
 	  <PackageTags>database, sql, ado, api, backend</PackageTags>
 	  <PackageReleaseNotes>
-		  [2029-10-30] Fixed no get correctly the property name when is overwrite using DatabaseAttribute(Name = "") to match with table column name.
-		  [2029-10-29] Update READ ME and fixed null reference in loger.
+		  [2023-11-01] Fixed how to calculate page in the query to set like start index and num elements. So developer need to calculate page num * num elements to get the correct range. In convination with Blazor Virtualize Component get the correct numbers.
+		  [2023-10-30] Fixed no get correctly the property name when is overwrite using DatabaseAttribute(Name = "") to match with table column name.
+		  [2023-10-29] Update READ ME and fixed null reference in loger.
 	  </PackageReleaseNotes>
 	  <RepositoryUrl>https://github.com/drualcman/DigitalDoor.Database.ADO</RepositoryUrl>
 	  <RepositoryType>Git</RepositoryType>

@@ -7,9 +7,9 @@ internal abstract class SqlQueryBase : SqlBaseCommands
         : base(dbLog, logResults, databaseControl, charControl, connectionString) =>
         RequiredFields = requiredFields;
 
-    protected string SetQuery<TModel>(string indexColumn = "", int pageNumber = 0, int numElements = 0)
+    protected string SetQuery<TModel>(string indexColumn = "", int startIndex = 0, int numElements = 0)
     {
         SqlQueryTranslator queryTranslator = new SqlQueryTranslator(RequiredFields);
-        return queryTranslator.SetQuery<TModel>(indexColumn, pageNumber, numElements);
+        return queryTranslator.SetQuery<TModel>(indexColumn, startIndex, numElements);
     }
 }

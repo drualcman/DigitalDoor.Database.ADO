@@ -55,10 +55,10 @@ DataSet ds = database.GetDataSet<Customers>();
 DataView dv = database.GetDataView<Customers>();
 List<Customers> list = database.List<Customers>();
 
-// with pagination
-DataTable dataTable = database.GetDataTable<Customers>(nameof(Customers.Id), 1, 50);
-DataSet ds = database.GetDataSet<Customers>(nameof(Customers.Id), 1, 50);
-DataView dv = database.GetDataView<Customers>(nameof(Customers.Id), 1, 50);
-List<Customers> list = database.List<Customers>(nameof(Customers.Id), 1, 50);
+// with pagination (startIndex =  numPage * numElements)
+DataTable dataTable = database.GetDataTable<Customers>(nameof(Customers.Id), 0, 50);
+DataSet ds = database.GetDataSet<Customers>(nameof(Customers.Id), 10, 50);
+DataView dv = database.GetDataView<Customers>(nameof(Customers.Id), 100, 50);
+List<Customers> list = database.List<Customers>(nameof(Customers.Id), 1000, 50);
 ```
 

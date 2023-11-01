@@ -18,7 +18,7 @@ public class SqlQueryTranslator
     /// <typeparam name="TModel"></typeparam>
     /// <param name="model"></param>
     /// <returns></returns>
-    public string SetQuery<TModel>(string indexColumn = "", int pageNumber = 0, int numElements = 0)
+    public string SetQuery<TModel>()
     {
         PropertyInfo[] properties = typeof(TModel).GetProperties(BindingFlags.Public | BindingFlags.Instance);
 
@@ -118,10 +118,22 @@ public class SqlQueryTranslator
             if (foundSome) retorno.Remove(retorno.Length - 3, 3);
             else retorno.Remove(retorno.Length - 7, 7);
         }
-        if(!string.IsNullOrEmpty(indexColumn) && pageNumber > 0 && numElements > 0)
+        return retorno.ToString();
+    }
+
+    /// <summary>
+    /// Get the select from the properties name about the model send
+    /// </summary>
+    /// <typeparam name="TModel"></typeparam>
+    /// <param name="model"></param>
+    /// <returns></returns>
+    public string SetQuery<TModel>(string indexColumn, int startIndex, int numElements)
+    {
+        StringBuilder retorno = new StringBuilder(SetQuery<TModel>());
+        if(!string.IsNullOrEmpty(indexColumn) && numElements > 0)
         {
             retorno.Append($" ORDER BY {indexColumn}");
-            retorno.Append($" OFFSET ( ( {pageNumber} - 1 ) * {numElements} ) ROWS");
+            retorno.Append($" OFFSET {startIndex} ROWS");
             retorno.Append($" FETCH NEXT {numElements} ROWS ONLY ");
         }
         return retorno.ToString();
