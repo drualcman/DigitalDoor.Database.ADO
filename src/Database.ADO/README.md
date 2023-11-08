@@ -15,7 +15,7 @@ builder.Services.AddScoped<DataBaseWithADO>();
 ### appsettings
 ```json
   "DatabaseOptions": {
-    "ConnectionString": "FHCLARKSRV\\SQLEXPRESS;Initial Catalog=cfauction;Persist Security Info=false;User ID=sa;Password=DrUalcman5081;Max Pool Size=100;",
+    "ConnectionString": "localhost\\SQLEXPRESS;Initial Catalog=databasename;Persist Security Info=false;User ID=uadminguser;Password=**********;Max Pool Size=100;",
     "Options": {
       "LogOptions": {
         "LogResults": true,
