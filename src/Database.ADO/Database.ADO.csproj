@@ -1,10 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-     <TargetFramework>net7.0</TargetFramework>
+	  <TargetFrameworks>net7.0;net8.0</TargetFrameworks>
 	  <ImplicitUsings>enable</ImplicitUsings>
 	  <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-	  <Version>0.1.4</Version>
+	  <Version>0.1.5</Version>
 	  <Authors>Sergi Ortiz Gomez</Authors>
 	  <Company>Digital Door</Company>
 	  <Description>Basic Simple ORM using ADO.</Description>
@@ -12,7 +12,7 @@
 	  <PackageLicenseFile>License.txt</PackageLicenseFile>
 	  <PackageTags>database, sql, ado, api, backend</PackageTags>
 	  <PackageReleaseNotes>
-		  [2023-11-08] Update som improvements and readme file.
+		  [2023-11-08] Update some improvements and readme file.
 		  [2023-11-01] Fixed how to calculate page in the query to set like start index and num elements. So developer need to calculate page num * num elements to get the correct range. In convination with Blazor Virtualize Component get the correct numbers.
 		  [2023-10-30] Fixed no get correctly the property name when is overwrite using DatabaseAttribute(Name = "") to match with table column name.
 		  [2023-10-29] Update READ ME and fixed null reference in loger.
@@ -20,7 +20,7 @@
 	  <RepositoryUrl>https://github.com/drualcman/DigitalDoor.Database.ADO</RepositoryUrl>
 	  <RepositoryType>Git</RepositoryType>
 	  <PackageProjectUrl>https://github.com/drualcman/DigitalDoor.Database.ADO</PackageProjectUrl>
-	  <PackageReadmeFile>README.md</PackageReadmeFile>
+	  <PackageReadmeFile>readme.md</PackageReadmeFile>
 	  <ErrorReport>send</ErrorReport>
 	  <Nullable>disable</Nullable>
 	  <Title>DigitalDoor.Database.ADO</Title>
@@ -29,21 +29,17 @@
 
   <ItemGroup>
     <PackageReference Include="Database.Entities" Version="0.1.0" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="7.0.4" />
-    <PackageReference Include="Microsoft.Extensions.Options" Version="7.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="7.0.4" Condition="'$(TargetFramework)' == 'net7.0'" />
+    <PackageReference Include="Microsoft.Extensions.Options" Version="7.0.1" Condition="'$(TargetFramework)' == 'net7.0'" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="8.0.0" Condition="'$(TargetFramework)' == 'net8.0'" />
+    <PackageReference Include="Microsoft.Extensions.Options" Version="8.0.0" Condition="'$(TargetFramework)' == 'net8.0'" />
     <PackageReference Include="System.Data.SqlClient" Version="4.8.5" />
   </ItemGroup>
 
 
   <ItemGroup>
-    <None Update="License.txt">
-      <PackagePath>\</PackagePath>
-      <Pack>True</Pack>
-    </None>
-    <None Update="README.md">
-      <PackagePath>\</PackagePath>
-      <Pack>True</Pack>
-    </None>
+    <None Include="License.txt" Pack="true" PackagePath="" />
+    <None Include="readme.md" Pack="true" PackagePath="" />
   </ItemGroup>
 
 </Project>
