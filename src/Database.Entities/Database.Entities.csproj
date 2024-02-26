@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-	  <TargetFrameworks>net7.0;net8.0</TargetFrameworks>
+	  <TargetFrameworks>net6.0;net7.0;net8.0</TargetFrameworks>
     <ImplicitUsings>enable</ImplicitUsings>
 	  <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 	  <Version>0.1.1</Version>
@@ -17,8 +17,14 @@
 	  <ErrorReport>send</ErrorReport>
 	  <Nullable>disable</Nullable>
 	  <Title>DigitalDoor.Database.Entities</Title>
+	  <PackageReadmeFile>readme.md</PackageReadmeFile>
+	  <PackageLicenseFile>License.txt</PackageLicenseFile>
   </PropertyGroup>
 
+	<ItemGroup>
+		<None Include="License.txt" Pack="true" PackagePath="" />
+		<None Include="readme.md" Pack="true" PackagePath="" />
+	</ItemGroup>
 
 
 </Project>
