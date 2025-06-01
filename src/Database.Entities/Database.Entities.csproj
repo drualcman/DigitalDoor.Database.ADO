@@ -4,13 +4,13 @@
 	  <TargetFrameworks>net8.0;net9.0</TargetFrameworks>
     <ImplicitUsings>enable</ImplicitUsings>
 	  <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-	  <Version>0.1.1</Version>
+	  <Version>0.1.2</Version>
 	  <Authors>Sergi Ortiz Gomez</Authors>
 	  <Company>Digital Door</Company>
 	  <Description>Basic Simple ORM objects.</Description>
 	  <Copyright>Free</Copyright>
 	  <PackageTags>database</PackageTags>
-	  <PackageReleaseNotes>Only tested with MS-SQL.</PackageReleaseNotes>
+	  <PackageReleaseNotes>Update license. Only tested with MS-SQL.</PackageReleaseNotes>
 	  <RepositoryUrl>https://github.com/drualcman/DigitalDoor.Database.ADO</RepositoryUrl>
 	  <RepositoryType>Git</RepositoryType>
 	  <PackageProjectUrl>https://github.com/drualcman/DigitalDoor.Database.ADO</PackageProjectUrl>

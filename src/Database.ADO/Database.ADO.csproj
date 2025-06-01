@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-	  <TargetFrameworks>net6.0;net7.0;net8.0</TargetFrameworks>
+	  <TargetFrameworks>net6.0;net7.0;net8.0;net9.0</TargetFrameworks>
 	  <ImplicitUsings>enable</ImplicitUsings>
 	  <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 	  <Version>0.1.5</Version>
@@ -12,6 +12,7 @@
 	  <PackageLicenseFile>License.txt</PackageLicenseFile>
 	  <PackageTags>database, sql, ado, api, backend</PackageTags>
 	  <PackageReleaseNotes>
+		  [2025-06-01] Update license. Add Net 9 support.
 		  [2024-02-26] Update System.Data.SqlClient because vulnerable version update.
 		  [2023-11-08] Update some improvements and readme file.
 		  [2023-11-01] Fixed how to calculate page in the query to set like start index and num elements. So developer need to calculate page num * num elements to get the correct range. In convination with Blazor Virtualize Component get the correct numbers.
